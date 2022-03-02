@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Board 1-1</h2>
+<table class="table">
+    <tr>
+        <th>제목</th>
+        <th>내용</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>비고</th>
+    </tr>
+    <tr>
+        <td>
+            <a th:href="@{/board1/boardview1_1}">제목1</a>
+        </td>
+        <td>내용1</td>
+        <td>작성자1</td>
+        <td>작성일1</td>
+        <td>
+            <a th:href="@{/board1/boardupdate1_1}">
+                <button type="button">수정</button>
+            </a>
+            <a th:href="@{#}">
+                <button type="button">삭제</button>
+            </a>
+        </td>
+    </tr>
+</table>
+
+<a th:href="@{/board1/boardwrite1_1}">
+    <button type="button">글쓰기</button>
+</a>
+
+</body>
+</html>
