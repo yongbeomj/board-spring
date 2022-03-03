@@ -9,36 +9,40 @@
     </style>
 </head>
 <body>
-<nav id="nav">
-    <ul>
-        <li><a href="#">board1</a></li>
+<div class="container">
+    <nav class="d-flex justify-content-between">
         <ul>
+            <h4>Board1</h4>
             <li><a th:href="@{/board1/boardlist1_1}">1-1</a></li>
             <li><a href="#">1-2</a></li>
             <li><a href="#">1-3</a></li>
         </ul>
-        <li><a href="#">board2</a></li>
         <ul>
+            <h4>Board2</h4>
             <li><a href="#">2-1</a></li>
             <li><a href="#">2-2</a></li>
             <li><a href="#">2-3</a></li>
         </ul>
-        <li><a href="#">board3</a></li>
         <ul>
+            <h4>Board3</h4>
             <li><a href="#">3-1</a></li>
             <li><a href="#">3-2</a></li>
             <li><a href="#">3-3</a></li>
         </ul>
-        <li><a href="#">board4</a></li>
         <ul>
+            <h4>Board4</h4>
             <li><a href="#">4-1</a></li>
             <li><a href="#">4-2</a></li>
             <li><a href="#">4-3</a></li>
         </ul>
-        <li><a th:href="@{/member/signup}">회원가입</a></li>
-        <li><a th:href="@{/member/login}">로그인</a></li>
-        <li><a th:href="@{/member/memberinfo}">내정보</a></li>
-    </ul>
-</nav>
+        <ul>
+            <h4>회원</h4>
+            <li><a th:href="@{/member/signup}">회원가입</a></li>
+            <li><a th:href="@{/member/login}">로그인</a></li>
+            <li><a th:href="@{/member/memberinfo}">내정보</a></li>
+        </ul>
+    </nav>
+</div>
+<br><br>
 </body>
 </html>

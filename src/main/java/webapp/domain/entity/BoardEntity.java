@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Builder
-public class BoardEntity {
+public class BoardEntity extends BaseTimeEntity {
 
     // 게시판번호
     @Id

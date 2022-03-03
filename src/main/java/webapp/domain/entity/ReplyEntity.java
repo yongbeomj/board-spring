@@ -12,14 +12,14 @@ import javax.persistence.*;
 @ToString
 @Builder
 @Table(name = "reply")
-public class ReplyEntity {
+public class ReplyEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rno")
     private int rno;
 
-    @Column(name ="rcontents")
+    @Column(name = "rcontents")
     private String rcontents;
 
     @ManyToOne
@@ -33,7 +33,6 @@ public class ReplyEntity {
     @ManyToOne
     @JoinColumn(name = "bno")
     private BoardEntity boardEntity;
-
 
 
 }

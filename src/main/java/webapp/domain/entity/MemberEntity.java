@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Builder
 @Table(name = "member")
-public class MemberEntity {
+public class MemberEntity extends BaseTimeEntity {
 
     // 회원번호
     @Id
