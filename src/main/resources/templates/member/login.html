@@ -5,11 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+<div th:replace="header.html :: header"></div>
+<div th:replace="menu.html :: menu"></div>
+
 <h2>로그인</h2>
-<form action="/member/logincontroller" method="post">
-    아이디 : <input type="text" name="id">
-    비번 : <input type="text" name="id">
+<form action="/member/loginController" method="post">
+    아이디 : <input type="text" name="mid">
+    비번 : <input type="text" name="mpw">
     <button type="submit">로그인</button>
 </form>
+
+<div th:replace="footer.html :: footer"></div>
 </body>
 </html>
