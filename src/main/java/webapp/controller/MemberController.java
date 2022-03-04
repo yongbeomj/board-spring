@@ -35,12 +35,12 @@ public class MemberController {
 
     }
 
-
     // 로그인
     @GetMapping("/member/login")
     public String Login(){
         return "member/login";
     }
+
 
     // 마이페이지
     @GetMapping("/member/memberinfo")
