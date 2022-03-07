@@ -1,6 +1,9 @@
-package webapp.domain.entity;
+package webapp.domain.entity.member;
 
 import lombok.*;
+import webapp.domain.entity.BaseTimeEntity;
+import webapp.domain.entity.board.ReplyEntity;
+import webapp.domain.entity.board.BoardEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;

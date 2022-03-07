@@ -1,4 +1,4 @@
-package webapp.domain.entity;
+package webapp.domain.entity.board;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

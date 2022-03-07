@@ -36,7 +36,8 @@
             <li><a href="#">4-3</a></li>
         </ul>
         <ul>
-            <h4>회원</h4>
+            <h4 th:if="@{loginDto != null}">회원 : 로그인 O</h4>
+            <h4 th:if="@{loginDto == null}">회원 : 로그인 X</h4>
             <li><a th:href="@{/member/signup}">회원가입</a></li>
             <li><a th:href="@{/member/login}">로그인</a></li>
             <li><a th:href="@{/member/memberinfo}">내정보</a></li>

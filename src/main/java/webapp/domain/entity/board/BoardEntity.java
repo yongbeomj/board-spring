@@ -1,6 +1,9 @@
-package webapp.domain.entity;
+package webapp.domain.entity.board;
 
 import lombok.*;
+import webapp.domain.entity.BaseTimeEntity;
+import webapp.domain.entity.member.MemberEntity;
+import webapp.domain.entity.category.CategoryEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,6 +32,10 @@ public class BoardEntity extends BaseTimeEntity {
     // 내용
     @Column(name = "bcontents")
     private String bcontents;
+
+    // 첨부파일
+    @Column(name = "bfile")
+    private String bfile;
 
     // 작성자 = mno
     @ManyToOne

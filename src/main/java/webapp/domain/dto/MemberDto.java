@@ -1,7 +1,7 @@
 package webapp.domain.dto;
 
 import lombok.*;
-import webapp.domain.entity.MemberEntity;
+import webapp.domain.entity.member.MemberEntity;
 
 @Getter
 @Setter

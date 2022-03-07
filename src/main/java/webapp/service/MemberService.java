@@ -3,8 +3,8 @@ package webapp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import webapp.domain.dto.MemberDto;
-import webapp.domain.entity.MemberEntity;
-import webapp.domain.entity.MemberRepository;
+import webapp.domain.entity.member.MemberEntity;
+import webapp.domain.entity.member.MemberRepository;
 
 import java.util.List;
 

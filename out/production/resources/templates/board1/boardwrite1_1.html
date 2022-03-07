@@ -5,14 +5,21 @@
     <title>Title</title>
 </head>
 <body>
+
+<div th:replace="header.html :: header"></div>
+<div th:replace="menu.html :: menu"></div>
+
 <h2>Board 1-1 글쓰기</h2>
-<form action="#" method="get">
 
-    제목 : <input type="text" name="title">
-    내용 : <input type="text" name="title">
+<div class="container">
+    <form action="/board/boardwritecontroller" method="post">
+        카테고리 : <input type="text" name="cano" value="1"> <br>
+        제목 : <input type="text" name="btitle"> <br>
+        내용 : <textarea id="bcontents" name="bcontents"></textarea> <br>
+        <!--첨부파일 : <input type="file" name="bfile"> <br>-->
 
-    <button type="submit">등록</button>
-
-</form>
+        <button type="submit">등록</button>
+    </form>
+</div>
 </body>
 </html>

@@ -1,6 +1,8 @@
-package webapp.domain.entity;
+package webapp.domain.entity.category;
 
 import lombok.*;
+import webapp.domain.entity.board.BoardEntity;
+import webapp.domain.entity.board.ReplyEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
