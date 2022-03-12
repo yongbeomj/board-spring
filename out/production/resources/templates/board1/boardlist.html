@@ -26,12 +26,8 @@
         <td th:text="${#temporals.format(boardDto.bcreateDate, 'yyyy-MM-dd hh:mm:ss')}">작성일1</td>
 
         <td>
-            <a th:href="@{/board1/boardupdate}">
-                <button type="button" class="btn btn-outline-secondary">수정</button>
-            </a>
-            <a th:href="@{#}">
-                <button type="button" class="btn btn-outline-secondary">삭제</button>
-            </a>
+            <button type="button" class="btn btn-outline-secondary">수정</button>
+            <button th:onclick="bdelete([[${boardDto.bno}]])" class="btn btn-outline-secondary">삭제</button>
         </td>
     </tr>
 </table>
@@ -39,6 +35,7 @@
 <a th:href="@{/board1/boardwrite}">
     <button type="button" class="btn btn-outline-primary">글쓰기</button>
 </a>
+
 
 </body>
 </html>

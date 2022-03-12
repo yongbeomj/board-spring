@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -48,6 +49,17 @@ public class BoardService {
         // 컨트롤러에서 받은 데이터를 엔티티로 변환 후 db에 저장한다.
         boardRepository.save(boardDto.toentity());
         return true;
+    }
+
+    // boarddelete
+    public boolean delete(int bno){
+        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+        if (entityOptional.get() != null) {
+            boardRepository.delete(entityOptional.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

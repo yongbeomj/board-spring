@@ -70,5 +70,16 @@ public class BoardContorller {
         return "board1/boardupdate";
     }
 
+    // boarddelete
+    @GetMapping("/board1/boarddelete")
+    @ResponseBody
+    public int boarddelete(@RequestParam("bno") int bno){
+        boolean result = boardService.delete(bno);
+        if (result){
+            return 1;
+        } else {
+            return 2;
+        }
+    }
 
 }
