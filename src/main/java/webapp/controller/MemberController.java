@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import webapp.domain.dto.MemberDto;
 import webapp.service.MemberService;
 
@@ -51,18 +52,24 @@ public class MemberController {
         // 2. 받아온 정보를 세션에 저장
         if (loginDto != null) {
             HttpSession session = request.getSession(); // 세션 가져오기
-            session.setAttribute("loginDto", loginDto); // 세션 설정
-            System.out.println("로그인 성공");
+            session.setAttribute("logindto", loginDto); // 세션 설정
             return "redirect:/";
         }
         return null;
     }
 
-
     // 마이페이지
-    @GetMapping("/member/memberinfo")
+    @GetMapping("/member/info")
     public String Memberinfo() {
-        return "member/memberinfo";
+        return "member/info";
+    }
+
+    // 로그아웃 처리
+    @GetMapping("/member/logout")
+    public String logout() {
+        HttpSession session = request.getSession();
+        session.setAttribute("logindto", null);   // 기존 세션을 null 로 변경
+        return "redirect:/"; // 로그아웃 성공시 메인페이지로 이동
     }
 
 }

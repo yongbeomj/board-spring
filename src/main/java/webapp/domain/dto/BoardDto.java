@@ -3,6 +3,8 @@ package webapp.domain.dto;
 import lombok.*;
 import webapp.domain.entity.board.BoardEntity;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,13 +17,13 @@ public class BoardDto {
     private String btitle;
     private String bcontents;
     private String bwriter;
-//    private String bfile;
-//    private String brealfile;
+    private LocalDateTime bcreateDate;
 
     public BoardEntity toentity() {
         return BoardEntity.builder()
                 .btitle(this.btitle)
                 .bcontents(this.bcontents)
+                .bwriter(this.bwriter)
                 .build();
     }
 

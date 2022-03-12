@@ -33,9 +33,9 @@ public class BoardEntity extends BaseTimeEntity {
     @Column(name = "bcontents")
     private String bcontents;
 
-    // 첨부파일
-    @Column(name = "bfile")
-    private String bfile;
+    // 작성자
+    @Column(name = "bwriter")
+    private String bwriter;
 
     // 작성자 = mno
     @ManyToOne
