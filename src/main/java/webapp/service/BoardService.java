@@ -7,7 +7,10 @@ import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
 import webapp.domain.entity.board.BoardEntity;
 import webapp.domain.entity.board.BoardRepository;
+import webapp.domain.entity.category.CategoryEntity;
 import webapp.domain.entity.category.CategoryRepository;
+import webapp.domain.entity.member.MemberEntity;
+import webapp.domain.entity.member.MemberRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,10 +47,20 @@ public class BoardService {
         return boardDtos;
     }
 
+    @Autowired
+    MemberRepository memberRepository;
     // boardwrite
-    public boolean boardwrite(BoardDto boardDto) {
-        // 컨트롤러에서 받은 데이터를 엔티티로 변환 후 db에 저장한다.
-        boardRepository.save(boardDto.toentity());
+    public boolean boardwrite(BoardDto boardDto, int cano) {
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+
+        BoardEntity boardEntity = BoardEntity.builder()
+                .btitle(boardDto.getBtitle())
+                .bcontents(boardDto.getBcontents())
+                .bwriter(boardDto.getBwriter())
+                .categoryEntity(categoryEntity.get())
+                .build();
+
+        boardRepository.save(boardEntity);
         return true;
     }
 

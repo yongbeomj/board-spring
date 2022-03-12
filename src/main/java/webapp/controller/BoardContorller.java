@@ -29,12 +29,6 @@ public class BoardContorller {
 
     @Autowired
     BoardService boardService;
-    @Autowired
-    HttpServletRequest request;
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
 
     // boardlist1_1
     @GetMapping("/board1/boardlist")
@@ -52,11 +46,11 @@ public class BoardContorller {
 
     @PostMapping("/board/writecontroller")
     @ResponseBody
-    public String boardwritecontroller(BoardDto boardDto) {
-        boardService.boardwrite(boardDto);
-        // 리스트 페이지 호출
-        return "redirect:/";
+    public String boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
+        boardService.boardwrite(boardDto, cano);
+        return "redirect:/board1/boardlist";
     }
+
 
     // boardview1_1
     @GetMapping("/board1/boardview")

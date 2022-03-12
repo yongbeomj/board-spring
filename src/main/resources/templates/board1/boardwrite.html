@@ -8,11 +8,10 @@
 
 <div th:replace="header.html :: header"></div>
 
-<h2>Board 1-1 글쓰기</h2>
-
 <div class="container">
+    <h2>Board 1-1 글쓰기</h2>
     <form action="/board/writecontroller" method="post">
-        카테고리 : <input type="text" name="cano" value="1"> <br>
+        <input type="text" id="cano" name="cano" value="1" style="display:none">
         제목 : <input type="text" name="btitle"> <br>
         내용 : <textarea id="bcontents" name="bcontents"></textarea> <br>
         작성자 : <input type="text" name="bwriter"> <br>
