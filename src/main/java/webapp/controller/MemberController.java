@@ -36,7 +36,6 @@ public class MemberController {
         memberService.signup(memberDto);
         System.out.println("회원가입 성공");
         return "redirect:/";
-
     }
 
     // 로그인

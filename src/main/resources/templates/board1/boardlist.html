@@ -32,7 +32,7 @@
                 <a th:href="@{/board1/boardview}">제목1</a>
             </td>
             <td th:text="${boardDto.bcontents}">내용1</td>
-            <td th:text="${boardDto.bwriter}">작성자1</td>
+            <td th:text="${memberDto.mid}">작성자1</td>
             <td th:text="${#temporals.format(boardDto.bcreateDate, 'yyyy-MM-dd hh:mm:ss')}">작성일1</td>
 
             <td>

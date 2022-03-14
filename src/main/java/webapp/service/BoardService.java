@@ -31,6 +31,9 @@ public class BoardService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     // boardlist
     public ArrayList<BoardDto> boardlist() {
         List<BoardEntity> boardEntities = boardRepository.findAll();
@@ -47,19 +50,18 @@ public class BoardService {
         return boardDtos;
     }
 
-    @Autowired
-    MemberRepository memberRepository;
     // boardwrite
-    public boolean boardwrite(BoardDto boardDto, int cano) {
+    public boolean boardwrite(BoardDto boardDto, int cano, int mno) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
 
         BoardEntity boardEntity = BoardEntity.builder()
                 .btitle(boardDto.getBtitle())
                 .bcontents(boardDto.getBcontents())
                 .bwriter(boardDto.getBwriter())
                 .categoryEntity(categoryEntity.get())
+                .memberEntity(memberEntity.get())
                 .build();
-
         boardRepository.save(boardEntity);
         return true;
     }

@@ -30,10 +30,16 @@ public class BoardContorller {
     @Autowired
     BoardService boardService;
 
-    // boardlist1_1
+    @Autowired
+    HttpServletRequest request;
+
+    // boardlist1
     @GetMapping("/board1/boardlist")
     public String boardlist(Model model) {
         ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        model.addAttribute("memberDto",memberDto);
         model.addAttribute("boardDtos",boardDtos);
         return "board1/boardlist";
     }
@@ -47,7 +53,9 @@ public class BoardContorller {
     @PostMapping("/board/writecontroller")
     @ResponseBody
     public String boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
-        boardService.boardwrite(boardDto, cano);
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        boardService.boardwrite(boardDto, cano, memberDto.getMno());
         return "redirect:/board1/boardlist";
     }
 
