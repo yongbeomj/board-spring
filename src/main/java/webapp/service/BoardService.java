@@ -15,6 +15,7 @@ import webapp.domain.entity.member.MemberRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,7 @@ public class BoardService {
     // boardlist
     public ArrayList<BoardDto> boardlist() {
         List<BoardEntity> boardEntities = boardRepository.findAll();
+
         ArrayList<BoardDto> boardDtos = new ArrayList<>();
         for (BoardEntity boardEntity : boardEntities) {
             BoardDto boardDto = new BoardDto(
@@ -51,23 +53,21 @@ public class BoardService {
     }
 
     // boardwrite
-    public boolean boardwrite(BoardDto boardDto, int cano, int mno) {
+    public boolean boardwrite(BoardDto boardDto, int cano) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
-        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
 
         BoardEntity boardEntity = BoardEntity.builder()
                 .btitle(boardDto.getBtitle())
                 .bcontents(boardDto.getBcontents())
                 .bwriter(boardDto.getBwriter())
                 .categoryEntity(categoryEntity.get())
-                .memberEntity(memberEntity.get())
                 .build();
         boardRepository.save(boardEntity);
         return true;
     }
 
     // boarddelete
-    public boolean delete(int bno){
+    public boolean delete(int bno) {
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
         if (entityOptional.get() != null) {
             boardRepository.delete(entityOptional.get());
@@ -75,6 +75,21 @@ public class BoardService {
         } else {
             return false;
         }
+    }
+
+    // boardview
+    public BoardDto getboard(int bno) {
+        // 게시물을 찾는다
+        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+        // dto에 값을 넣고 리턴한다
+        return BoardDto.builder()
+                .bno(entityOptional.get().getBno())
+                .btitle(entityOptional.get().getBtitle())
+                .bcontents(entityOptional.get().getBcontents())
+                .bwriter(entityOptional.get().getBwriter())
+                .bcreateDate(entityOptional.get().getCreatedDate())
+                .build();
+
     }
 
 

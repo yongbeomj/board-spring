@@ -28,17 +28,14 @@
             <th>비고</th>
         </tr>
         <tr th:each="boardDto : ${boardDtos}">
-            <td th:text="${boardDto.btitle}">
-                <a th:href="@{/board1/boardview}">제목1</a>
+            <td>
+                <a th:href="@{'/board1/boardview/' + ${boardDto.bno}}">
+                    <span th:text="${boardDto.btitle}">제목</span>
+                </a>
             </td>
             <td th:text="${boardDto.bcontents}">내용1</td>
-            <td th:text="${memberDto.mid}">작성자1</td>
+            <td th:text="${boardDto.bwriter}">작성자1</td>
             <td th:text="${#temporals.format(boardDto.bcreateDate, 'yyyy-MM-dd hh:mm:ss')}">작성일1</td>
-
-            <td>
-                <button type="button" class="btn btn-outline-secondary">수정</button>
-                <button th:onclick="bdelete([[${boardDto.bno}]])" class="btn btn-outline-secondary">삭제</button>
-            </td>
         </tr>
     </table>
 

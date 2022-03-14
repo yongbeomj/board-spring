@@ -3,10 +3,7 @@ package webapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
@@ -55,20 +52,22 @@ public class BoardContorller {
     public String boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        boardService.boardwrite(boardDto, cano, memberDto.getMno());
+        boardService.boardwrite(boardDto, cano);
         return "redirect:/board1/boardlist";
     }
 
 
-    // boardview1_1
-    @GetMapping("/board1/boardview")
-    public String boardview1_1() {
+    // boardview1
+    @GetMapping("/board1/boardview/{bno}")
+    public String boardview1(@PathVariable("bno") int bno, Model model) {
+        BoardDto boardDto = boardService.getboard(bno);
+        model.addAttribute("boardDto",boardDto);
         return "board1/boardview";
     }
 
-    // boardupdate1_1
+    // boardupdate1
     @GetMapping("/board1/boardupdate")
-    public String boardupdate1_1() {
+    public String boardupdate1() {
         return "board1/boardupdate";
     }
 
