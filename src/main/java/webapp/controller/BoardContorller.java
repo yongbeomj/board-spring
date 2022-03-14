@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
 import webapp.domain.entity.board.BoardEntity;
+import webapp.domain.entity.board.ReplyEntity;
 import webapp.domain.entity.category.CategoryEntity;
 import webapp.domain.entity.category.CategoryRepository;
 import webapp.domain.entity.member.MemberEntity;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +38,8 @@ public class BoardContorller {
         ArrayList<BoardDto> boardDtos = boardService.boardlist();
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        model.addAttribute("memberDto",memberDto);
-        model.addAttribute("boardDtos",boardDtos);
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("boardDtos", boardDtos);
         return "board1/boardlist";
     }
 
@@ -47,12 +49,12 @@ public class BoardContorller {
         return "board1/boardwrite";
     }
 
-    @PostMapping("/board/writecontroller")
+    @PostMapping("/board1/writecontroller")
     @ResponseBody
     public String boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        boardService.boardwrite(boardDto, cano);
+        boardService.boardwrite(boardDto, cano, memberDto.getMno());
         return "redirect:/board1/boardlist";
     }
 
@@ -61,7 +63,11 @@ public class BoardContorller {
     @GetMapping("/board1/boardview/{bno}")
     public String boardview1(@PathVariable("bno") int bno, Model model) {
         BoardDto boardDto = boardService.getboard(bno);
-        model.addAttribute("boardDto",boardDto);
+        List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
+
+        Collections.reverse(replyEntities);
+        model.addAttribute("boardDto", boardDto);
+        model.addAttribute("replyEntities",replyEntities);
         return "board1/boardview";
     }
 
@@ -74,7 +80,7 @@ public class BoardContorller {
         System.out.println("제목 : " + boardDto.getBtitle());
         System.out.println("내용 : " + boardDto.getBcontents());
         System.out.println("작성자 : " + boardDto.getBwriter());
-        model.addAttribute("boardDto",boardDto);
+        model.addAttribute("boardDto", boardDto);
         return "board1/boardupdate";
     }
 
@@ -88,9 +94,9 @@ public class BoardContorller {
                     .btitle(btitle)
                     .bcontents(bcontents)
                     .build();
-            System.out.println("확인 : " + bno +","+ btitle +","+ bcontents);
+            System.out.println("확인 : " + bno + "," + btitle + "," + bcontents);
             boardService.boardupdate(boardDto);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("에러");
             System.out.println(e);
 
@@ -103,13 +109,30 @@ public class BoardContorller {
     // boarddelete
     @GetMapping("/board1/boarddelete")
     @ResponseBody
-    public int boarddelete(@RequestParam("bno") int bno){
+    public int boarddelete(@RequestParam("bno") int bno) {
         boolean result = boardService.boarddelete(bno);
-        if (result){
+        if (result) {
             return 1;
         } else {
             return 2;
         }
+    }
+
+    @GetMapping("/board/replywrite")
+    @ResponseBody
+    public String replywrite(@RequestParam("bno") int bno,
+                             @RequestParam("rcontents") String rcontents) {
+
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+
+        if (memberDto == null) {
+            return "2";
+        }
+        boardService.replywrite(bno, rcontents, memberDto.getMid());
+
+        return "1";
+
     }
 
 }

@@ -3,10 +3,7 @@ package webapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import webapp.domain.dto.MemberDto;
 import webapp.service.MemberService;
 
@@ -34,7 +31,6 @@ public class MemberController {
         // 1. 작성 데이터 가져온다. - form name과 dto가 동일하면 자동 주입
         // 2. 서비스에 dto 넘기기
         memberService.signup(memberDto);
-        System.out.println("회원가입 성공");
         return "redirect:/";
     }
 
@@ -44,17 +40,15 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/member/loginController")
-    public String loginController(MemberDto memberDto) {
-        // 1. 서비스에 dto넘기고 결과값 dto에 저장
-        MemberDto loginDto = memberService.login(memberDto);
-        // 2. 받아온 정보를 세션에 저장
-        if (loginDto != null) {
-            HttpSession session = request.getSession(); // 세션 가져오기
-            session.setAttribute("logindto", loginDto); // 세션 설정
+    @PostMapping("/member/logincontroller")
+    public String logincontroller(@RequestParam("mid") String mid, @RequestParam("mpw") String mpw) {
+        boolean result = memberService.login(mid, mpw);
+        if (result) {
             return "redirect:/";
+//            return "1";
+        } else {
+            return "redirect:/member/login";
         }
-        return null;
     }
 
     // 마이페이지

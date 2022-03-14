@@ -26,6 +26,9 @@ public class ReplyEntity extends BaseTimeEntity {
     @Column(name = "rcontents")
     private String rcontents;
 
+    @Column(name = "rwriter")
+    private String rwriter;
+
     @ManyToOne
     @JoinColumn(name = "mno")
     private MemberEntity memberEntity2;

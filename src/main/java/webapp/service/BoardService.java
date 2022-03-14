@@ -7,6 +7,8 @@ import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
 import webapp.domain.entity.board.BoardEntity;
 import webapp.domain.entity.board.BoardRepository;
+import webapp.domain.entity.board.ReplyEntity;
+import webapp.domain.entity.board.ReplyRepository;
 import webapp.domain.entity.category.CategoryEntity;
 import webapp.domain.entity.category.CategoryRepository;
 import webapp.domain.entity.member.MemberEntity;
@@ -54,14 +56,17 @@ public class BoardService {
     }
 
     // boardwrite
-    public boolean boardwrite(BoardDto boardDto, int cano) {
+    public boolean boardwrite(BoardDto boardDto, int cano, int mno) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+
 
         BoardEntity boardEntity = BoardEntity.builder()
                 .btitle(boardDto.getBtitle())
                 .bcontents(boardDto.getBcontents())
                 .bwriter(boardDto.getBwriter())
                 .categoryEntity(categoryEntity.get())
+                .memberEntity(memberEntity.get())
                 .build();
         boardRepository.save(boardEntity);
         return true;
@@ -110,6 +115,43 @@ public class BoardService {
             return false;
         }
 
+    }
+
+    @Autowired
+    ReplyRepository replyRepository;
+
+    // 댓글 등록
+    public boolean replywrite(int bno, String rcontents, String rwriter) {
+        // 해당 게시물 가져오기
+        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+        int mno = entityOptional.get().getMemberEntity().getMno();
+        int cano = entityOptional.get().getCategoryEntity().getCano();
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+
+        System.out.println("mno : " + mno);
+        System.out.println("cano : " + cano);
+
+        ReplyEntity replyEntities = ReplyEntity.builder()
+                .rcontents(rcontents)
+                .rwriter(rwriter)
+                .boardEntity(entityOptional.get())
+                .categoryEntity2(categoryEntity.get())
+                .memberEntity2(memberEntity.get())
+                .build();
+
+        replyRepository.save(replyEntities); // 댓글 저장
+        entityOptional.get().getReplyEntities().add(replyEntities); // 게시물에 댓글 저장
+        return false;
+    }
+
+    // 모든 댓글 출력
+    public List<ReplyEntity> getreplylist(int bno) {
+
+        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+        List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
+
+        return replyEntities;
     }
 
 

@@ -10,12 +10,23 @@
 
 <div class="container">
     <h2>Board 1-1 글쓰기</h2>
-    <form action="/board/writecontroller" method="post">
+    <form action="/board1/writecontroller" method="post">
         <input type="text" id="cano" name="cano" value="1" style="display:none">
-        제목 : <input type="text" name="btitle"> <br>
-        내용 : <textarea id="bcontents" name="bcontents"></textarea> <br>
-        작성자 : <input type="text" name="bwriter"> <br>
-        <input type="submit" value="등록">
+        <table class="table">
+            <tr>
+                <td>제목</td>
+                <td>
+                    <input type="text" name="btitle" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <textarea id="bcontents" name="bcontents" class="form-control"></textarea>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" class="btn btn-outline-secondary" value="등록">
     </form>
 </div>
 </body>

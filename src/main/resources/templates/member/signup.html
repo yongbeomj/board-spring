@@ -8,8 +8,8 @@
 
 <div th:replace="header.html :: header"></div>
 
-<h2>회원가입</h2>
 <div class="container">
+    <h2>회원가입</h2>
     <form action="/member/signupController" method="post">
         <table class="table">
             <tr>
@@ -30,7 +30,9 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button type="submit" class="btn btn-primary">확인</button></td>
+                <td>
+                    <button type="submit" class="btn btn-primary">확인</button>
+                </td>
             </tr>
         </table>
 

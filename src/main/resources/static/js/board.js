@@ -14,28 +14,25 @@ function bdelete(bno) {
     });
 }
 
-function bupdate(bno) {
-
-    document.getElementById("tdtitle").innerHTML = "<input type='text' name='newtitle'>";
-    document.getElementById("tdcontents").innerHTML = "<input type='text' name='newcontents'>";
-    document.getElementById("btnbupdate").style = "display:none";
-    document.getElementById("btnbchange").style = "display:block";
-
-    // 확인 버튼을 누르면
-    $("#btnbchange").click(function() {
-        $.ajax({
-            url: "/board1/boardupdate",
-            data: {"newtitle" : document.getElementById("newtitle").value,
-            "newcontents" : document.getElementById("newcontents").value},
-            success : function(result){
-                if (result == 1){
-                    alert("수정 완료");
-                } else {
-                    alert("오류 발생")
-                }
+function replywrite(bno) {
+    var rcontents = $("#rcontents").val();
+    if (rcontents == "") {
+        alert("내용 입력하시오");
+        return;
+    }
+    $.ajax({
+        url : "/board/replywrite",
+        data : {"bno" : bno, "rcontents" : rcontents},
+        success : function(data){
+            if( data == 1 ){
+                $('#replytable').load( location.href+' #replytable' );
+                $("#rcontents").val("");
+            }else if( data == 2 ) {
+                alert("로그인 하세요");
+                return;
             }
+        }
 
-        });
+    });
 
-    })
 }

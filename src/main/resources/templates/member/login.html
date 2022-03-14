@@ -6,15 +6,16 @@
 </head>
 <body>
 <div th:replace="header.html :: header"></div>
+<div class="container">
 
-<h2>로그인</h2>
-<form action="/member/loginController" method="post">
-    아이디 : <input type="text" name="mid">
-    비번 : <input type="text" name="mpw">
-    <button type="submit">로그인</button>
-</form>
-
-
+    <h2>로그인</h2>
+    <form action="/member/logincontroller" method="post">
+        아이디 : <input type="text" id="mid" name="mid">
+        비번 : <input type="text" id="mpw" name="mpw">
+        <button type="submit">로그인</button>
+        <div id="loginfailmsg" class="text-danger text-center m-2"></div>
+    </form>
+</div>
 <div th:replace="footer.html :: footer"></div>
 </body>
 </html>
