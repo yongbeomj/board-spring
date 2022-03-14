@@ -14,12 +14,10 @@
             <h2>Board1 view</h2>
         </div>
         <div class="d-flex">
-            <button id="btnbupdate" type="button" class="btn btn-outline-secondary"
-                    th:onclick="bupdate([[${boardDto.bno}]])">수정
-            </button>
-            <button id="btnbchange" type="button" class="btn btn-outline-secondary" style="display:none;">확인</button>
-            <button id="btnbdelete" class="btn btn-outline-secondary" th:onclick="bdelete([[${boardDto.bno}]])">삭제
-            </button>
+            <a th:href="@{'/board1/boardupdate/'} + ${boardDto.bno}">
+                <button id="btnbupdate" type="button" class="btn btn-outline-secondary">수정</button>
+            </a>
+            <button class="btn btn-outline-secondary" th:onclick="bdelete([[${boardDto.bno}]])">삭제</button>
         </div>
     </div>
     <div>
@@ -49,6 +47,16 @@
                 </td>
             </tr>
         </table>
+        <div class="d-flex">
+            <div>
+                <a th:href="@{'/board1/boardupdate/'} + ${boardDto.bno}">
+                    <button id="btnbupdate" type="button" class="btn btn-outline-secondary">수정</button>
+                </a>
+            </div>
+            <div>
+                <button class="btn btn-outline-secondary mx-2" th:onclick="bdelete([[${boardDto.bno}]])">삭제</button>
+            </div>
+        </div>
     </div>
 </div>
 

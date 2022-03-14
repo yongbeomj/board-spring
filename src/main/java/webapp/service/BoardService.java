@@ -68,6 +68,7 @@ public class BoardService {
     }
 
     // boarddelete
+    @Transactional
     public boolean boarddelete(int bno) {
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
         if (entityOptional.get() != null) {
@@ -79,6 +80,7 @@ public class BoardService {
     }
 
     // boardview
+    @Transactional
     public BoardDto getboard(int bno) {
         // 게시물을 찾는다
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
@@ -95,13 +97,16 @@ public class BoardService {
 
     // boardupdate
     @Transactional
-    public boolean boardupdate(String newtitle, String newcontents) {
+    public boolean boardupdate(BoardDto boardDto) {
         try {
             Optional<BoardEntity> entityOptional = boardRepository.findById(boardDto.getBno());
+            System.out.println("bnos : " + boardDto.getBno());
             entityOptional.get().setBtitle(boardDto.getBtitle());
             entityOptional.get().setBcontents(boardDto.getBcontents());
             return true;
         } catch (Exception e) {
+            System.out.println("에러");
+            System.out.println(e);
             return false;
         }
 

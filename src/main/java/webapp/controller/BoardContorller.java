@@ -67,14 +67,37 @@ public class BoardContorller {
 
     // boardupdate1
     @GetMapping("/board1/boardupdate/{bno}")
-    @ResponseBody
-    public int boardupdate(@PathVariable("bno") int bno) {
-        boolean result = boardService.boardupdate();
-        if (result){
-            return 1;
-        } else {
-            return 2;
+    public String boardupdate(@PathVariable("bno") int bno, Model model) {
+        // 해당 게시물 가져오기
+        BoardDto boardDto = boardService.getboard(bno);
+        System.out.println("bno : " + boardDto.getBno());
+        System.out.println("제목 : " + boardDto.getBtitle());
+        System.out.println("내용 : " + boardDto.getBcontents());
+        System.out.println("작성자 : " + boardDto.getBwriter());
+        model.addAttribute("boardDto",boardDto);
+        return "board1/boardupdate";
+    }
+
+    @PostMapping("/board1/updatecontroller")
+    public String updatecontroller(@RequestParam("bno") int bno,
+                                   @RequestParam("btitle") String btitle,
+                                   @RequestParam("bcontents") String bcontents) {
+        try {
+            BoardDto boardDto = BoardDto.builder()
+                    .bno(bno)
+                    .btitle(btitle)
+                    .bcontents(bcontents)
+                    .build();
+            System.out.println("확인 : " + bno +","+ btitle +","+ bcontents);
+            boardService.boardupdate(boardDto);
+        } catch (Exception e){
+            System.out.println("에러");
+            System.out.println(e);
+
         }
+
+
+        return "redirect:/board1/boardview/" + bno;
     }
 
     // boarddelete
