@@ -14,6 +14,7 @@ import webapp.domain.entity.member.MemberRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class BoardService {
     }
 
     // boarddelete
-    public boolean delete(int bno) {
+    public boolean boarddelete(int bno) {
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
         if (entityOptional.get() != null) {
             boardRepository.delete(entityOptional.get());
@@ -89,6 +90,20 @@ public class BoardService {
                 .bwriter(entityOptional.get().getBwriter())
                 .bcreateDate(entityOptional.get().getCreatedDate())
                 .build();
+
+    }
+
+    // boardupdate
+    @Transactional
+    public boolean boardupdate(String newtitle, String newcontents) {
+        try {
+            Optional<BoardEntity> entityOptional = boardRepository.findById(boardDto.getBno());
+            entityOptional.get().setBtitle(boardDto.getBtitle());
+            entityOptional.get().setBcontents(boardDto.getBcontents());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
 
     }
 

@@ -66,16 +66,22 @@ public class BoardContorller {
     }
 
     // boardupdate1
-    @GetMapping("/board1/boardupdate")
-    public String boardupdate1() {
-        return "board1/boardupdate";
+    @GetMapping("/board1/boardupdate/{bno}")
+    @ResponseBody
+    public int boardupdate(@PathVariable("bno") int bno) {
+        boolean result = boardService.boardupdate();
+        if (result){
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     // boarddelete
     @GetMapping("/board1/boarddelete")
     @ResponseBody
     public int boarddelete(@RequestParam("bno") int bno){
-        boolean result = boardService.delete(bno);
+        boolean result = boardService.boarddelete(bno);
         if (result){
             return 1;
         } else {

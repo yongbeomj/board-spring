@@ -13,30 +13,43 @@
         <div>
             <h2>Board1 view</h2>
         </div>
-        <div>
-            <button type="button" class="btn btn-outline-secondary">수정</button>
-            <button th:onclick="bdelete([[${boardDto.bno}]])" class="btn btn-outline-secondary">삭제</button>
+        <div class="d-flex">
+            <button id="btnbupdate" type="button" class="btn btn-outline-secondary"
+                    th:onclick="bupdate([[${boardDto.bno}]])">수정
+            </button>
+            <button id="btnbchange" type="button" class="btn btn-outline-secondary" style="display:none;">확인</button>
+            <button id="btnbdelete" class="btn btn-outline-secondary" th:onclick="bdelete([[${boardDto.bno}]])">삭제
+            </button>
         </div>
     </div>
-
-    <table class="table">
-        <tr>
-            <td>제목</td>
-            <td th:text="${boardDto.btitle}">제목</td>
-        </tr>
-        <tr>
-            <td>내용</td>
-            <td th:text="${boardDto.bcontents}">내용</td>
-        </tr>
-        <tr>
-            <td>작성자</td>
-            <td th:text="${boardDto.bwriter}">작성자</td>
-        </tr>
-        <tr>
-            <td>작성일</td>
-            <td th:text="${#temporals.format(boardDto.bcreateDate, 'yyyy-MM-dd hh:mm:ss')}">작성일</td>
-        </tr>
-    </table>
+    <div>
+        <table class="table">
+            <tr>
+                <td>제목</td>
+                <td>
+                    <span id="tdtitle" th:text="${boardDto.btitle}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <span id="tdcontents" th:text="${boardDto.bcontents}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>작성자</td>
+                <td>
+                    <span id="tdwriter" th:text="${boardDto.bwriter}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>작성일</td>
+                <td>
+                    <span th:text="${#temporals.format(boardDto.bcreateDate, 'yyyy-MM-dd hh:mm:ss')}"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 
