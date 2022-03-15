@@ -9,7 +9,9 @@ import webapp.domain.entity.member.MemberRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -43,6 +45,19 @@ public class MemberService {
             }
         }
         return false;
+    }
+
+    // mno -> 회원정보 전환
+    @Transactional
+    public MemberDto getmemberDto(int mno){
+        Optional<MemberEntity> entityOptional = memberRepository.findById(mno);
+        return MemberDto.builder()
+                .mid(entityOptional.get().getMid())
+                .mpw(entityOptional.get().getMpw())
+                .mname(entityOptional.get().getMname())
+                .memail(entityOptional.get().getMemail())
+                .mcreateDate(entityOptional.get().getCreatedDate())
+                .build();
     }
 
 

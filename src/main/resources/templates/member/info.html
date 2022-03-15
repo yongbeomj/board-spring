@@ -7,12 +7,33 @@
 <body>
 <div th:replace="header.html :: header"></div>
 <div class="container">
-    <h2>내정보</h2>
-    아이디 : <input type="text" name="id">
-    비번 : <input type="text" name="id">
-    이름 : <input type="text" name="id">
-    이메일 : <input type="text" name="id">
+    <h2>My page</h2>
+    <table class="table">
+        <tr>
+            <td>아이디</td>
+            <td>
+                <span th:text="${memberDto.mid}" id="mid" name="mid"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>아이디</td>
+            <td>
+                <span th:text="${memberDto.mpw}" id="mpw" name="mpw"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td>
+                <span th:text="${memberDto.mname}" id="mname" name="mname"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>이메일</td>
+            <td>
+                <span th:text="${memberDto.memail}" id="memail" name="memail"></span>
+            </td>
+        </tr>
+    </table>
 </div>
-<div th:replace="footer.html :: footer"></div>
 </body>
 </html>

@@ -3,6 +3,8 @@ package webapp.domain.dto;
 import lombok.*;
 import webapp.domain.entity.member.MemberEntity;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class MemberDto {
     private String mpw;
     private String mname;
     private String memail;
+    private LocalDateTime mcreateDate;
 
     public MemberEntity toentity() {
         return MemberEntity.builder()

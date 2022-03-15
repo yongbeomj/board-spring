@@ -36,7 +36,7 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/member/login")
-    public String Login() {
+    public String login() {
         return "member/login";
     }
 
@@ -53,11 +53,15 @@ public class MemberController {
 
     // 마이페이지
     @GetMapping("/member/info")
-    public String Memberinfo() {
+    public String memberinfo(Model model) {
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberDto memberDto = memberService.getmemberDto(loginDto.getMno());
+        model.addAttribute("memberDto",memberDto);
         return "member/info";
     }
 
-    // 로그아웃 처리
+    // 로그아웃
     @GetMapping("/member/logout")
     public String logout() {
         HttpSession session = request.getSession();
