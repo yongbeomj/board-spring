@@ -59,18 +59,19 @@
 
     <table class="table" id="replytable">
         <tr>
-            <th width="10%">작성자 <br> <span style="font-size:5px;">작성일</span></th>
-            <th width="70%">내용</th>
+            <th width="8%">작성자</th>
+            <th width="10%">작성일</th>
+            <th width="65%">내용</th>
             <th width="10%">비고</th>
         </tr>
-        <tr>
-            <td>
-                <div th:text="${replyEntities.getMemberEntity2().getMid()}">작성자</div>
-                <div style="font-size:5px;" th:text="${replyEntities.createdDate}">작성일</div>
+        <tr th:each="replyEntities : ${replyEntities}">
+            <td th:text="${replyEntities.getMemberEntity2().getMid()}">작성자</td>
+            <td th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"
+                style="font-size:15px;">작성일
             </td>
             <td th:text="${replyEntities.rcontents}">내용</td>
             <td>
-                <button class="btn btn-secondary">삭제</button>
+                <button class="btn btn-secondary" th:onclick="rdelete([[${replyEntities.rno}]])">삭제</button>
                 <button class="btn btn-secondary">수정</button>
             </td>
         </tr>

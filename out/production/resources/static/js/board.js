@@ -14,6 +14,22 @@ function bdelete(bno) {
     });
 }
 
+function rdelete(rno) {
+
+    $.ajax({
+        url : "/board1/replydelete",
+        data : {"rno" : rno},
+        success : function(result){
+            if (result == 1) {
+                $('#replytable').load( location.href+' #replytable' );
+                alert("댓글이 삭제되었습니다");
+            } else {
+                alert("오류발생");
+            }
+        }
+    });
+}
+
 function replywrite(bno) {
     var rcontents = $("#rcontents").val();
     if (rcontents == "") {

@@ -23,7 +23,6 @@ public class BoardDto {
         return BoardEntity.builder()
                 .btitle(this.btitle)
                 .bcontents(this.bcontents)
-                .bwriter(this.bwriter)
                 .build();
     }
 

@@ -67,7 +67,7 @@ public class BoardContorller {
 
         Collections.reverse(replyEntities);
         model.addAttribute("boardDto", boardDto);
-        model.addAttribute("replyEntities",replyEntities);
+        model.addAttribute("replyEntities", replyEntities);
         return "board1/boardview";
     }
 
@@ -76,10 +76,6 @@ public class BoardContorller {
     public String boardupdate(@PathVariable("bno") int bno, Model model) {
         // 해당 게시물 가져오기
         BoardDto boardDto = boardService.getboard(bno);
-        System.out.println("bno : " + boardDto.getBno());
-        System.out.println("제목 : " + boardDto.getBtitle());
-        System.out.println("내용 : " + boardDto.getBcontents());
-        System.out.println("작성자 : " + boardDto.getBwriter());
         model.addAttribute("boardDto", boardDto);
         return "board1/boardupdate";
     }
@@ -94,7 +90,6 @@ public class BoardContorller {
                     .btitle(btitle)
                     .bcontents(bcontents)
                     .build();
-            System.out.println("확인 : " + bno + "," + btitle + "," + bcontents);
             boardService.boardupdate(boardDto);
         } catch (Exception e) {
             System.out.println("에러");
@@ -118,6 +113,7 @@ public class BoardContorller {
         }
     }
 
+    // replywrite
     @GetMapping("/board/replywrite")
     @ResponseBody
     public String replywrite(@RequestParam("bno") int bno,
@@ -130,9 +126,21 @@ public class BoardContorller {
             return "2";
         }
         boardService.replywrite(bno, rcontents, memberDto.getMid());
-
         return "1";
+    }
 
+    // replydelete
+    @GetMapping("/board1/replydelete")
+    @ResponseBody
+    public int replydelete(@RequestParam("rno") int rno) {
+        boolean result = boardService.replydelete(rno);
+        if (result) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
 }
+
+

@@ -30,13 +30,13 @@ public class BoardService {
     BoardRepository boardRepository;
 
     @Autowired
-    HttpServletRequest request;
-
-    @Autowired
     CategoryRepository categoryRepository;
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    ReplyRepository replyRepository;
 
     // boardlist
     public ArrayList<BoardDto> boardlist() {
@@ -48,7 +48,7 @@ public class BoardService {
                     boardEntity.getBno(),
                     boardEntity.getBtitle(),
                     boardEntity.getBcontents(),
-                    boardEntity.getBwriter(),
+                    boardEntity.getMemberEntity().getMid(),
                     boardEntity.getCreatedDate());
             boardDtos.add(boardDto);
         }
@@ -64,7 +64,6 @@ public class BoardService {
         BoardEntity boardEntity = BoardEntity.builder()
                 .btitle(boardDto.getBtitle())
                 .bcontents(boardDto.getBcontents())
-                .bwriter(boardDto.getBwriter())
                 .categoryEntity(categoryEntity.get())
                 .memberEntity(memberEntity.get())
                 .build();
@@ -89,12 +88,15 @@ public class BoardService {
     public BoardDto getboard(int bno) {
         // 게시물을 찾는다
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+        int mno = entityOptional.get().getMemberEntity().getMno();
+        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+
         // dto에 값을 넣고 리턴한다
         return BoardDto.builder()
                 .bno(entityOptional.get().getBno())
                 .btitle(entityOptional.get().getBtitle())
                 .bcontents(entityOptional.get().getBcontents())
-                .bwriter(entityOptional.get().getBwriter())
+                .bwriter(memberEntity.get().getMid())
                 .bcreateDate(entityOptional.get().getCreatedDate())
                 .build();
 
@@ -105,7 +107,6 @@ public class BoardService {
     public boolean boardupdate(BoardDto boardDto) {
         try {
             Optional<BoardEntity> entityOptional = boardRepository.findById(boardDto.getBno());
-            System.out.println("bnos : " + boardDto.getBno());
             entityOptional.get().setBtitle(boardDto.getBtitle());
             entityOptional.get().setBcontents(boardDto.getBcontents());
             return true;
@@ -117,8 +118,6 @@ public class BoardService {
 
     }
 
-    @Autowired
-    ReplyRepository replyRepository;
 
     // 댓글 등록
     public boolean replywrite(int bno, String rcontents, String rwriter) {
@@ -129,12 +128,8 @@ public class BoardService {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
 
-        System.out.println("mno : " + mno);
-        System.out.println("cano : " + cano);
-
         ReplyEntity replyEntities = ReplyEntity.builder()
                 .rcontents(rcontents)
-                .rwriter(rwriter)
                 .boardEntity(entityOptional.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
@@ -152,6 +147,18 @@ public class BoardService {
         List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
 
         return replyEntities;
+    }
+
+    // replydelete
+    @Transactional
+    public boolean replydelete(int rno) {
+        Optional<ReplyEntity> entityOptional = replyRepository.findById(rno);
+        if (entityOptional != null) {
+            replyRepository.delete(entityOptional.get());
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

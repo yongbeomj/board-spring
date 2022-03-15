@@ -33,10 +33,6 @@ public class BoardEntity extends BaseTimeEntity {
     @Column(name = "bcontents")
     private String bcontents;
 
-    // 작성자
-    @Column(name = "bwriter")
-    private String bwriter;
-
     // 작성자 = mno
     @ManyToOne
     @JoinColumn(name="mno")
