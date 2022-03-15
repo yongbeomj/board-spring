@@ -8,7 +8,8 @@
 <div th:replace="header.html :: header"></div>
 
 <div class="container">
-    <h2>Board1 view</h2>
+    <h2>Board 1 view</h2>
+    <span th:text="${boardDto.cano}"></span>
     <table class="table">
         <tr>
             <td>제목</td>
@@ -42,7 +43,7 @@
             </a>
         </div>
         <div>
-            <button class="btn btn-outline-secondary mx-2" th:onclick="bdelete([[${boardDto.bno}]])">삭제</button>
+            <button class="btn btn-outline-secondary mx-2" th:onclick="bdelete([[${boardDto.bno}]], [[${boardDto.cano}]])">삭제</button>
         </div>
     </div>
 

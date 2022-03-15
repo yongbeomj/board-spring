@@ -4,25 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
-import webapp.domain.entity.board.BoardEntity;
 import webapp.domain.entity.board.ReplyEntity;
-import webapp.domain.entity.category.CategoryEntity;
-import webapp.domain.entity.category.CategoryRepository;
-import webapp.domain.entity.member.MemberEntity;
-import webapp.domain.entity.member.MemberRepository;
 import webapp.service.BoardService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class BoardContorller {
@@ -36,7 +28,8 @@ public class BoardContorller {
     // boardlist1
     @GetMapping("/board1/boardlist")
     public String boardlist1(Model model) {
-        ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        int cano = 1;
+        ArrayList<BoardDto> boardDtos = boardService.boardlist(cano);
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         model.addAttribute("memberDto", memberDto);
@@ -47,7 +40,8 @@ public class BoardContorller {
     // boardlist2
     @GetMapping("/board2/boardlist")
     public String boardlist2(Model model) {
-        ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        int cano = 2;
+        ArrayList<BoardDto> boardDtos = boardService.boardlist(cano);
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         model.addAttribute("memberDto", memberDto);
@@ -58,7 +52,8 @@ public class BoardContorller {
     // boardlist3
     @GetMapping("/board3/boardlist")
     public String boardlist3(Model model) {
-        ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        int cano = 3;
+        ArrayList<BoardDto> boardDtos = boardService.boardlist(cano);
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         model.addAttribute("memberDto", memberDto);
@@ -162,7 +157,7 @@ public class BoardContorller {
 
     // boardupdate1
     @GetMapping("/board1/boardupdate/{bno}")
-    public String boardupdate(@PathVariable("bno") int bno, Model model) {
+    public String boardupdate1(@PathVariable("bno") int bno, Model model) {
         // 해당 게시물 가져오기
         BoardDto boardDto = boardService.getboard(bno);
         model.addAttribute("boardDto", boardDto);
@@ -187,10 +182,66 @@ public class BoardContorller {
         return "redirect:/board1/boardview/" + bno;
     }
 
+
+    // boardupdate2
+    @GetMapping("/board2/boardupdate/{bno}")
+    public String boardupdate2(@PathVariable("bno") int bno, Model model) {
+        // 해당 게시물 가져오기
+        BoardDto boardDto = boardService.getboard(bno);
+        model.addAttribute("boardDto", boardDto);
+        return "board2/boardupdate";
+    }
+
+    @PostMapping("/board2/updatecontroller")
+    public String updatecontroller2(@RequestParam("bno") int bno,
+                                   @RequestParam("btitle") String btitle,
+                                   @RequestParam("bcontents") String bcontents) {
+        try {
+            BoardDto boardDto = BoardDto.builder()
+                    .bno(bno)
+                    .btitle(btitle)
+                    .bcontents(bcontents)
+                    .build();
+            boardService.boardupdate(boardDto);
+        } catch (Exception e) {
+            System.out.println("에러");
+            System.out.println(e);
+        }
+        return "redirect:/board2/boardview/" + bno;
+    }
+
+    // boardupdate1
+    @GetMapping("/board3/boardupdate/{bno}")
+    public String boardupdate3(@PathVariable("bno") int bno, Model model) {
+        // 해당 게시물 가져오기
+        BoardDto boardDto = boardService.getboard(bno);
+        model.addAttribute("boardDto", boardDto);
+        return "board3/boardupdate";
+    }
+
+    @PostMapping("/board3/updatecontroller")
+    public String updatecontroller3(@RequestParam("bno") int bno,
+                                   @RequestParam("btitle") String btitle,
+                                   @RequestParam("bcontents") String bcontents) {
+        try {
+            BoardDto boardDto = BoardDto.builder()
+                    .bno(bno)
+                    .btitle(btitle)
+                    .bcontents(bcontents)
+                    .build();
+            boardService.boardupdate(boardDto);
+        } catch (Exception e) {
+            System.out.println("에러");
+            System.out.println(e);
+        }
+        return "redirect:/board3/boardview/" + bno;
+    }
+
+
     // boarddelete
-    @GetMapping("/board1/boarddelete")
+    @GetMapping("/board/boarddelete")
     @ResponseBody
-    public int boarddelete(@RequestParam("bno") int bno) {
+    public int boarddelete(@RequestParam("bno") int bno, @RequestParam("cano") int cano) {
         boolean result = boardService.boarddelete(bno);
         if (result) {
             return 1;

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class BoardDto {
 
     private int bno;
+    private int cano;
     private String btitle;
     private String bcontents;
     private String bwriter;

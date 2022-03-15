@@ -40,17 +40,20 @@ public class BoardService {
 
     // boardlist
     @Transactional
-    public ArrayList<BoardDto> boardlist() {
+    public ArrayList<BoardDto> boardlist(int cano) {
         List<BoardEntity> boardEntities = boardRepository.findAll();
         ArrayList<BoardDto> boardDtos = new ArrayList<>();
-        for (BoardEntity boardEntity : boardEntities) {
-            BoardDto boardDto = new BoardDto(
-                    boardEntity.getBno(),
-                    boardEntity.getBtitle(),
-                    boardEntity.getBcontents(),
-                    boardEntity.getMemberEntity().getMid(),
-                    boardEntity.getCreatedDate());
-            boardDtos.add(boardDto);
+        for (int i = 0; i < boardEntities.size(); i++) {
+            if (boardEntities.get(i).getCategoryEntity().getCano() == cano){
+                BoardDto boardDto = new BoardDto(
+                        boardEntities.get(i).getBno(),
+                        cano,
+                        boardEntities.get(i).getBtitle(),
+                        boardEntities.get(i).getBcontents(),
+                        boardEntities.get(i).getMemberEntity().getMid(),
+                        boardEntities.get(i).getCreatedDate());
+                boardDtos.add(boardDto);
+            }
         }
         return boardDtos;
     }
@@ -95,6 +98,7 @@ public class BoardService {
         // dto에 값을 넣고 리턴한다
         return BoardDto.builder()
                 .bno(entityOptional.get().getBno())
+                .cano(entityOptional.get().getCategoryEntity().getCano())
                 .btitle(entityOptional.get().getBtitle())
                 .bcontents(entityOptional.get().getBcontents())
                 .bwriter(memberEntity.get().getMid())
