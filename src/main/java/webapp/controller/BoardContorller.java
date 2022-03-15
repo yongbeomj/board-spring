@@ -141,6 +141,19 @@ public class BoardContorller {
         }
     }
 
+    // 댓글 수정
+    @GetMapping("/board1/replyupdate")
+    @ResponseBody
+    public String replyupdate(@RequestParam("rno") int rno, @RequestParam("newcontents") String newcontents) {
+        boolean result = boardService.replyupdate(rno, newcontents);
+        if (result) {
+            return "1";
+        } else {
+            return "2";
+        }
+
+    }
+
 }
 
 

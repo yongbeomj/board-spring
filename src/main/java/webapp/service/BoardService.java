@@ -161,5 +161,14 @@ public class BoardService {
         }
     }
 
+    // 댓글 수정
+    @Transactional
+    public boolean replyupdate(int rno, String newcontents) {
+        // 댓글 가져오기
+        ReplyEntity replyEntity = replyRepository.findById(rno).get();
+        // 내용 수정
+        replyEntity.setRcontents(newcontents);
+        return true;
+    }
 
 }
