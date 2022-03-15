@@ -14,8 +14,6 @@ function bdelete(bno) {
     });
 }
 
-
-
 function replywrite(bno) {
     var rcontents = $("#rcontents").val();
     if (rcontents == "") {
@@ -23,7 +21,7 @@ function replywrite(bno) {
         return;
     }
     $.ajax({
-        url : "/board/replywrite",
+        url : "/board1/replywrite",
         data : {"bno" : bno, "rcontents" : rcontents},
         success : function(data){
             if( data == 1 ){

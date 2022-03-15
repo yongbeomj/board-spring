@@ -35,13 +35,35 @@ public class BoardContorller {
 
     // boardlist1
     @GetMapping("/board1/boardlist")
-    public String boardlist(Model model) {
+    public String boardlist1(Model model) {
         ArrayList<BoardDto> boardDtos = boardService.boardlist();
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         model.addAttribute("memberDto", memberDto);
         model.addAttribute("boardDtos", boardDtos);
         return "board1/boardlist";
+    }
+
+    // boardlist2
+    @GetMapping("/board2/boardlist")
+    public String boardlist2(Model model) {
+        ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("boardDtos", boardDtos);
+        return "board2/boardlist";
+    }
+
+    // boardlist3
+    @GetMapping("/board3/boardlist")
+    public String boardlist3(Model model) {
+        ArrayList<BoardDto> boardDtos = boardService.boardlist();
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("boardDtos", boardDtos);
+        return "board3/boardlist";
     }
 
     // boardwrite1
@@ -52,7 +74,7 @@ public class BoardContorller {
 
     @PostMapping("/board1/writecontroller")
     @ResponseBody
-    public RedirectView boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
+    public RedirectView boardwritecontroller1(BoardDto boardDto, @RequestParam("cano") int cano) {
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         boolean result = boardService.boardwrite(boardDto, cano, memberDto.getMno());
@@ -61,9 +83,45 @@ public class BoardContorller {
         } else {
             return new RedirectView("/board1/boardwrite");
         }
-
     }
 
+    // boardwrite2
+    @GetMapping("/board2/boardwrite")
+    public String boardwrite2() {
+        return "board2/boardwrite";
+    }
+
+    @PostMapping("/board2/writecontroller")
+    @ResponseBody
+    public RedirectView boardwritecontroller2(BoardDto boardDto, @RequestParam("cano") int cano) {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        boolean result = boardService.boardwrite(boardDto, cano, memberDto.getMno());
+        if (result) {
+            return new RedirectView("/board2/boardlist");
+        } else {
+            return new RedirectView("/board2/boardwrite");
+        }
+    }
+
+    // boardwrite3
+    @GetMapping("/board3/boardwrite")
+    public String boardwrite3() {
+        return "board3/boardwrite";
+    }
+
+    @PostMapping("/board3/writecontroller")
+    @ResponseBody
+    public RedirectView boardwritecontroller3(BoardDto boardDto, @RequestParam("cano") int cano) {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        boolean result = boardService.boardwrite(boardDto, cano, memberDto.getMno());
+        if (result) {
+            return new RedirectView("/board3/boardlist");
+        } else {
+            return new RedirectView("/board3/boardwrite");
+        }
+    }
 
     // boardview1
     @GetMapping("/board1/boardview/{bno}")
@@ -76,6 +134,31 @@ public class BoardContorller {
         model.addAttribute("replyEntities", replyEntities);
         return "board1/boardview";
     }
+
+    // boardview2
+    @GetMapping("/board2/boardview/{bno}")
+    public String boardview2(@PathVariable("bno") int bno, Model model) {
+        BoardDto boardDto = boardService.getboard(bno);
+        List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
+
+        Collections.reverse(replyEntities);
+        model.addAttribute("boardDto", boardDto);
+        model.addAttribute("replyEntities", replyEntities);
+        return "board2/boardview";
+    }
+
+    // boardview3
+    @GetMapping("/board3/boardview/{bno}")
+    public String boardview3(@PathVariable("bno") int bno, Model model) {
+        BoardDto boardDto = boardService.getboard(bno);
+        List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
+
+        Collections.reverse(replyEntities);
+        model.addAttribute("boardDto", boardDto);
+        model.addAttribute("replyEntities", replyEntities);
+        return "board3/boardview";
+    }
+
 
     // boardupdate1
     @GetMapping("/board1/boardupdate/{bno}")
@@ -100,10 +183,7 @@ public class BoardContorller {
         } catch (Exception e) {
             System.out.println("에러");
             System.out.println(e);
-
         }
-
-
         return "redirect:/board1/boardview/" + bno;
     }
 
@@ -120,7 +200,7 @@ public class BoardContorller {
     }
 
     // replywrite
-    @GetMapping("/board/replywrite")
+    @GetMapping("/board1/replywrite")
     @ResponseBody
     public String replywrite(@RequestParam("bno") int bno,
                              @RequestParam("rcontents") String rcontents) {

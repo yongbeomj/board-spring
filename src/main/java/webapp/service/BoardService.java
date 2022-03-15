@@ -42,7 +42,6 @@ public class BoardService {
     @Transactional
     public ArrayList<BoardDto> boardlist() {
         List<BoardEntity> boardEntities = boardRepository.findAll();
-
         ArrayList<BoardDto> boardDtos = new ArrayList<>();
         for (BoardEntity boardEntity : boardEntities) {
             BoardDto boardDto = new BoardDto(
