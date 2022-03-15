@@ -14,7 +14,7 @@ function bdelete(bno, cano) {
     });
 }
 
-function replywrite(bno) {
+function rwrite(bno) {
     var rcontents = $("#rcontents").val();
     if (rcontents == "") {
         alert("내용 입력하시오");
@@ -33,6 +33,20 @@ function replywrite(bno) {
             }
         }
     });
+}
+
+function rrewrite(rno, rparent, rdepth, rorder){
+    document.getElementById("rrewrite"+rno).innerHTML =
+    "<div class='row'>"+
+        "<div class='col-md-10'>"+
+            "<input class='form-control' type='text' id='rcontents' name='rcontents'>"+
+        "</div>"+
+        "<div class='col-md-2'>"+
+            "<button class='form-control' th:onclick='btnrewrite([[${boardDto.bno}]])'>댓글작성</button>"+
+        "</div>"+
+    "</div>"
+
+    var rcontents = $("#rcontents").val();
 }
 
 function rdelete(rno) {

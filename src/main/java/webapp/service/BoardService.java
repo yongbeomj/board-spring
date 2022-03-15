@@ -134,12 +134,16 @@ public class BoardService {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
         List<ReplyEntity> reply = replyRepository.findAll();
-        int max = reply.get(1).getRparent();
-
-        for (int i=0; i < reply.size(); i++) {
-            if (max < reply.get(i).getRparent()){
-                max = reply.get(i).getRparent();
+        int maxrparent;
+        try {
+            maxrparent = reply.get(1).getRparent();
+            for (int i=0; i < reply.size(); i++) {
+                if (maxrparent < reply.get(i).getRparent()){
+                    maxrparent = reply.get(i).getRparent();
+                }
             }
+        } catch (Exception e){
+            maxrparent = 0;
         }
 
         ReplyEntity replyEntities = ReplyEntity.builder()
@@ -147,13 +151,14 @@ public class BoardService {
                 .boardEntity(entityOptional.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
-                .rparent(max+1)
+                .rparent(maxrparent+1)
                 .build();
 
         replyRepository.save(replyEntities); // 댓글 저장
         entityOptional.get().getReplyEntities().add(replyEntities); // 게시물에 댓글 저장
         return false;
     }
+
 
     // 모든 댓글 출력
     public List<ReplyEntity> getreplylist(int bno) {

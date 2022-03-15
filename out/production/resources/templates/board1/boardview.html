@@ -42,60 +42,61 @@
             </a>
         </div>
         <div>
-            <button class="btn btn-outline-secondary mx-2" th:onclick="bdelete([[${boardDto.bno}]], [[${boardDto.cano}]])">삭제</button>
+            <button class="btn btn-outline-secondary mx-2"
+                    th:onclick="bdelete([[${boardDto.bno}]], [[${boardDto.cano}]])">삭제
+            </button>
         </div>
     </div>
 
     <hr>
 
     <div class="row">
+        <h5>댓글</h5>
         <div class="col-md-10">
             <input class="form-control " type="text" id="rcontents" name="rcontents">
         </div>
         <div class="col-md-2">
-            <button class="form-control" th:onclick="replywrite([[${boardDto.bno}]])">댓글작성</button>
+            <button class="form-control" th:onclick="rwrite([[${boardDto.bno}]])">댓글작성</button>
         </div>
     </div>
+    <br>
+    <hr>
 
-    <table class="table" id="replytable">
-        <tr>
-            <th width="8%">작성자</th>
-            <th width="10%">작성일</th>
-            <th width="65%">내용</th>
-            <th width="10%">비고</th>
-        </tr>
-        <tr th:each="replyEntities : ${replyEntities}">
-            <td th:text="${replyEntities.getMemberEntity2().getMid()}">작성자</td>
-            <td th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"
-                style="font-size:15px;">작성일
-            </td>
-            <td>
-                <div id="rupdate">
-                    <span th:id="tdrcontents+${replyEntities.rno}" name="tdrcontents"
-                          th:text="${replyEntities.rcontents}"></span>
+    <div id="replytable" th:each="replyEntities : ${replyEntities}">
+        <div>
+            <span th:text="${replyEntities.getMemberEntity2().getMid()}"></span>
+            <span th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"></span>
+        </div>
+        <div class="d-flex">
+            <div class="col-md-10">
+                <span th:id="tdrcontents+${replyEntities.rno}" name="tdrcontents"
+                      th:text="${replyEntities.rcontents}"></span>
+            </div>
+            <div class="d-flex col-md-2 text-lg-end">
+                <div>
+                    <a href="#"
+                       th:onclick="rrewrite([[${replyEntities.rno}]],[[${replyEntities.rparent}]], [[${replyEntities.rdepth}]], [[${replyEntities.rorder}]])">댓글</a>
                 </div>
-            </td>
-            <td>
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <button class="btn btn-secondary" th:onclick="rdelete([[${replyEntities.rno}]])">삭제</button>
-                    </div>
-                    <div>
-                        <a th:id="btnrupdate+${replyEntities.rno}" th:onclick="rupdate([[${replyEntities.rno}]])">
-                            <button class="btn btn-secondary">수정</button>
-                        </a>
-                    </div>
-                    <div>
-                        <a th:id="btnrchange+${replyEntities.rno}" style="display:none;">
-                            <button class="btn btn-secondary">확인</button>
-                        </a>
-                    </div>
+                <div class="d-flex mx-2">
+                    <a href="#" th:id="btnrupdate+${replyEntities.rno}" th:onclick="rupdate([[${replyEntities.rno}]])">
+                        수정
+                    </a>
+                    <a href="#" th:id="btnrchange+${replyEntities.rno}" style="display:none;">
+                        확인
+                    </a>
                 </div>
-
-
-            </td>
-        </tr>
-    </table>
+                <div>
+                    <a href="#" th:onclick="rdelete([[${replyEntities.rno}]])">
+                        삭제
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <span th:id="rrewrite+${replyEntities.rno}">대댓글</span>
+        </div>
+        <hr>
+    </div>
 </div>
 
 
