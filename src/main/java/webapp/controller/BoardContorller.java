@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
 import webapp.domain.entity.board.BoardEntity;
@@ -51,11 +52,16 @@ public class BoardContorller {
 
     @PostMapping("/board1/writecontroller")
     @ResponseBody
-    public String boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
+    public RedirectView boardwritecontroller(BoardDto boardDto, @RequestParam("cano") int cano) {
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        boardService.boardwrite(boardDto, cano, memberDto.getMno());
-        return "redirect:/board1/boardlist";
+        boolean result = boardService.boardwrite(boardDto, cano, memberDto.getMno());
+        if (result) {
+            return new RedirectView("/board1/boardlist");
+        } else {
+            return new RedirectView("/board1/boardwrite");
+        }
+
     }
 
 

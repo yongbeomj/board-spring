@@ -39,6 +39,7 @@ public class BoardService {
     ReplyRepository replyRepository;
 
     // boardlist
+    @Transactional
     public ArrayList<BoardDto> boardlist() {
         List<BoardEntity> boardEntities = boardRepository.findAll();
 
@@ -56,6 +57,7 @@ public class BoardService {
     }
 
     // boardwrite
+    @Transactional
     public boolean boardwrite(BoardDto boardDto, int cano, int mno) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
