@@ -61,8 +61,8 @@
         <tr>
             <th width="8%">작성자</th>
             <th width="10%">작성일</th>
-            <th width="65%">내용</th>
-            <th width="10%">비고</th>
+            <th width="63%">내용</th>
+            <th width="15%">비고</th>
         </tr>
         <tr th:each="replyEntities : ${replyEntities}">
             <td th:text="${replyEntities.getMemberEntity2().getMid()}">작성자</td>
@@ -78,7 +78,9 @@
             <td>
                 <div class="d-flex justify-content-between">
                     <div>
-                        <button class="btn btn-secondary" th:onclick="rdelete([[${replyEntities.rno}]])">삭제</button>
+                        <a th:id="btnrupdate+${replyEntities.rno}" th:onclick="rrewrite([[${replyEntities.rno}]])">
+                            <button class="btn btn-secondary">댓글</button>
+                        </a>
                     </div>
                     <div>
                         <a th:id="btnrupdate+${replyEntities.rno}" th:onclick="rupdate([[${replyEntities.rno}]])">
@@ -90,10 +92,14 @@
                             <button class="btn btn-secondary">확인</button>
                         </a>
                     </div>
+                    <div>
+                        <button class="btn btn-secondary" th:onclick="rdelete([[${replyEntities.rno}]])">삭제</button>
+                    </div>
                 </div>
-
-
             </td>
+        </tr>
+        <tr>
+
         </tr>
     </table>
 </div>

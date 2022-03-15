@@ -2,6 +2,7 @@ package webapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import webapp.domain.dto.BoardDto;
 import webapp.domain.dto.MemberDto;
@@ -125,19 +126,28 @@ public class BoardService {
 
 
     // 댓글 등록
-    public boolean replywrite(int bno, String rcontents, String rwriter) {
+    public boolean replywrite(int bno, String rcontents) {
         // 해당 게시물 가져오기
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
         int mno = entityOptional.get().getMemberEntity().getMno();
         int cano = entityOptional.get().getCategoryEntity().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+        List<ReplyEntity> reply = replyRepository.findAll();
+        int max = reply.get(1).getRparent();
+
+        for (int i=0; i < reply.size(); i++) {
+            if (max < reply.get(i).getRparent()){
+                max = reply.get(i).getRparent();
+            }
+        }
 
         ReplyEntity replyEntities = ReplyEntity.builder()
                 .rcontents(rcontents)
                 .boardEntity(entityOptional.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
+                .rparent(max+1)
                 .build();
 
         replyRepository.save(replyEntities); // 댓글 저장

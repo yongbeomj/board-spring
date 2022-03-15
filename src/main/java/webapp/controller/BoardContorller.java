@@ -262,7 +262,7 @@ public class BoardContorller {
         if (memberDto == null) {
             return "2";
         }
-        boardService.replywrite(bno, rcontents, memberDto.getMid());
+        boardService.replywrite(bno, rcontents);
         return "1";
     }
 
