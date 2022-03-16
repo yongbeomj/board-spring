@@ -25,8 +25,7 @@ function rwrite(bno) {
         data : {"bno" : bno, "rcontents" : rcontents},
         success : function(data){
             if( data == 1 ){
-                $('#replytable').load( location.href+' #replytable' );
-                $("#rcontents").val("");
+                location.reload();
             }else if( data == 2 ) {
                 alert("로그인 하세요");
                 return;
@@ -35,18 +34,25 @@ function rwrite(bno) {
     });
 }
 
-function rrewrite(rno, rparent, rdepth, rorder){
-    document.getElementById("rrewrite"+rno).innerHTML =
-    "<div class='row'>"+
-        "<div class='col-md-10'>"+
-            "<input class='form-control' type='text' id='rcontents' name='rcontents'>"+
-        "</div>"+
-        "<div class='col-md-2'>"+
-            "<button class='form-control' th:onclick='btnrewrite([[${boardDto.bno}]])'>댓글작성</button>"+
-        "</div>"+
-    "</div>"
+function rrewrite(rno){
+    document.getElementById("rrewrite"+rno).style = "display:block";
 
-    var rcontents = $("#rcontents").val();
+    $(function(){
+        $("#btnrrechange" + rno).click(function(){ // 확인 버튼 클릭
+            $.ajax({
+                url : "/board1/rereplywrite",
+                data : {"rno" : rno, "rrecontents" : document.getElementById("rrecontents").value},
+                success : function(data){
+                    if (data == 1){
+                        location.reload();
+                    } else {
+                        alert("오류발생");
+                        return;
+                    }
+                }
+            });
+        });
+    });
 }
 
 function rdelete(rno) {

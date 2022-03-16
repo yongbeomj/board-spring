@@ -45,7 +45,7 @@ public class BoardService {
         List<BoardEntity> boardEntities = boardRepository.findAll();
         ArrayList<BoardDto> boardDtos = new ArrayList<>();
         for (int i = 0; i < boardEntities.size(); i++) {
-            if (boardEntities.get(i).getCategoryEntity().getCano() == cano){
+            if (boardEntities.get(i).getCategoryEntity().getCano() == cano) {
                 BoardDto boardDto = new BoardDto(
                         boardEntities.get(i).getBno(),
                         cano,
@@ -125,7 +125,7 @@ public class BoardService {
     }
 
 
-    // 댓글 등록
+    // 댓글 등록(첫번째)
     public boolean replywrite(int bno, String rcontents) {
         // 해당 게시물 가져오기
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
@@ -136,26 +136,72 @@ public class BoardService {
         List<ReplyEntity> reply = replyRepository.findAll();
         int maxrparent;
         try {
-            maxrparent = reply.get(1).getRparent();
-            for (int i=0; i < reply.size(); i++) {
-                if (maxrparent < reply.get(i).getRparent()){
-                    maxrparent = reply.get(i).getRparent();
+            int rparent = reply.get(1).getRparent();
+            for (int i = 0; i < reply.size(); i++) {
+                if (rparent < reply.get(i).getRparent()) {
+                    rparent = reply.get(i).getRparent();
                 }
             }
-        } catch (Exception e){
+            maxrparent = rparent + 1;
+        } catch (Exception e) {
             maxrparent = 0;
         }
-
         ReplyEntity replyEntities = ReplyEntity.builder()
                 .rcontents(rcontents)
                 .boardEntity(entityOptional.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
-                .rparent(maxrparent+1)
+                .rparent(maxrparent)
                 .build();
+
 
         replyRepository.save(replyEntities); // 댓글 저장
         entityOptional.get().getReplyEntities().add(replyEntities); // 게시물에 댓글 저장
+        return false;
+    }
+
+    // 대댓글 등록
+    public boolean rereplywrite(int rno, String rcontents) {
+        // 해당 댓글 가져오기
+        Optional<ReplyEntity> replyEntities = replyRepository.findById(rno);
+        int bno = replyEntities.get().getBoardEntity().getBno();
+        Optional<BoardEntity> boardEntity = boardRepository.findById(bno);
+        int mno = replyEntities.get().getMemberEntity2().getMno();
+        Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+        int cano = replyEntities.get().getCategoryEntity2().getCano();
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+
+        // 해당 댓글 번호를 찾아서 부모번호는 그대로, 깊이는 해당 댓글의 +1, 순서는 부모 댓글 전체 수량 +1
+        List<ReplyEntity> reply = replyRepository.findAll();
+        int rparent = replyEntities.get().getRparent();
+        System.out.println("확인 : " + rparent);
+        int rorder;
+        try {
+            rorder = reply.get(1).getRparent();
+            for (int i = 0; i < reply.size(); i++) {
+                if (reply.get(i).getRparent() == rparent) {
+                    if (rorder < reply.get(i).getRorder()) {
+                        rorder = reply.get(i).getRorder();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            rorder = 0;
+        }
+
+        ReplyEntity replyEntity = ReplyEntity.builder()
+                .rcontents(rcontents)
+                .boardEntity(boardEntity.get())
+                .categoryEntity2(categoryEntity.get())
+                .memberEntity2(memberEntity.get())
+                .rparent(replyEntities.get().getRparent())
+                .rorder(rorder + 1)
+                .rdepth(replyEntities.get().getRdepth() + 1)
+                .build();
+
+        replyRepository.save(replyEntity); // 댓글 저장
+        boardEntity.get().getReplyEntities().add(replyEntity); // 대댓글 저장
+
         return false;
     }
 

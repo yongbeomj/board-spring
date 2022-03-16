@@ -266,6 +266,22 @@ public class BoardContorller {
         return "1";
     }
 
+    // rereplywrite
+    @GetMapping("/board1/rereplywrite")
+    @ResponseBody
+    public String rereplywrite(@RequestParam("rno") int rno,
+                             @RequestParam("rrecontents") String rrecontents) {
+
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+
+        if (memberDto == null) {
+            return "2";
+        }
+        boardService.rereplywrite(rno, rrecontents);
+        return "1";
+    }
+
     // replydelete
     @GetMapping("/board1/replydelete")
     @ResponseBody
