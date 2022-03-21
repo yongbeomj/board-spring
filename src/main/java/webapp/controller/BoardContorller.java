@@ -124,7 +124,6 @@ public class BoardContorller {
         BoardDto boardDto = boardService.getboard(bno);
         List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
 
-//        Collections.so(replyEntities);
         model.addAttribute("boardDto", boardDto);
         model.addAttribute("replyEntities", replyEntities);
         return "board1/boardview";

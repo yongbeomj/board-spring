@@ -2,10 +2,7 @@ package webapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 import webapp.domain.dto.BoardDto;
-import webapp.domain.dto.MemberDto;
 import webapp.domain.entity.board.BoardEntity;
 import webapp.domain.entity.board.BoardRepository;
 import webapp.domain.entity.board.ReplyEntity;
@@ -15,11 +12,7 @@ import webapp.domain.entity.category.CategoryRepository;
 import webapp.domain.entity.member.MemberEntity;
 import webapp.domain.entity.member.MemberRepository;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -131,7 +124,6 @@ public class BoardService {
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
         // 댓글 전체
         List<ReplyEntity> reply = replyRepository.findAll();
-//        System.out.println(reply);
         // 카테고리 번호
         int cano = entityOptional.get().getCategoryEntity().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
@@ -213,23 +205,43 @@ public class BoardService {
     }
 
 
-//    // 모든 댓글 출력
+//    // 모든 댓글 출력 - 수정 중
 //    public List<ReplyEntity> getreplylist(int bno) {
 //
-//        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
-//        List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
+//        Optional<BoardEntity> boardEntity = boardRepository.findById(bno);
+//        List<ReplyEntity> replyEntities = boardEntity.get().getReplyEntities();
 //        List<ReplyEntity> getreply = new ArrayList<>();
-//        // 부모 번호로 묶어서 저장한다
-//        int rno;
-//        int rparent;
+//        // 같은 부모 번호로 묶어서 저장한다
 //        for (int i = 0; i < replyEntities.size(); i++){
-//            rparent = replyEntities.get(i).getRparent();
 //
-//            rno = replyEntities.get(i).getRno()
+//            // 만약 부모번호가 리스트 인덱스와 같으면
+//            if (replyEntities.get(i).getRparent() == i){
+//                // 댓글 작성자 정보
+//                int mno = replyEntities.get(i).getMemberEntity2().getMno();
+//                Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+//                // 카테고리 번호
+//                int cano = replyEntities.get(i).getCategoryEntity2().getCano();
+//                Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+//
+//                // 인덱스에 해당 댓글정보 저장
+//                ReplyEntity replyEntity = ReplyEntity.builder()
+//                        .rno(replyEntities.get(i).getRno())
+//                        .rcontents(replyEntities.get(i).getRcontents())
+//                        .rparent(replyEntities.get(i).getRparent())
+//                        .rdepth(replyEntities.get(i).getRdepth())
+//                        .rorder(replyEntities.get(i).getRorder())
+//                        .memberEntity2(memberEntity.get())
+//                        .categoryEntity2(categoryEntity.get())
+//                        .boardEntity(boardEntity.get())
+//                        .build();
+//                getreply.add(replyEntity);
+//            }
 //        }
+//        System.out.println(getreply);
 //
-//        return replyEntities;
+//        return getreply;
 //    }
+
     // 모든 댓글 출력
     public List<ReplyEntity> getreplylist(int bno) {
 
