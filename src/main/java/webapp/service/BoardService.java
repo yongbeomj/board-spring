@@ -129,14 +129,19 @@ public class BoardService {
     public boolean replywrite(int bno, String rcontents) {
         // 해당 게시물 가져오기
         Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
-        int mno = entityOptional.get().getMemberEntity().getMno();
+        // 댓글 전체
+        List<ReplyEntity> reply = replyRepository.findAll();
+//        System.out.println(reply);
+        // 카테고리 번호
         int cano = entityOptional.get().getCategoryEntity().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
+        // 댓글 작성자 정보
+        int mno = entityOptional.get().getMemberEntity().getMno();
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
-        List<ReplyEntity> reply = replyRepository.findAll();
+
         int maxrparent;
         try {
-            int rparent = reply.get(1).getRparent();
+            int rparent = reply.get(0).getRparent();
             for (int i = 0; i < reply.size(); i++) {
                 if (rparent < reply.get(i).getRparent()) {
                     rparent = reply.get(i).getRparent();
@@ -177,7 +182,6 @@ public class BoardService {
         // 해당 댓글 번호를 찾아서 부모번호는 그대로, 깊이는 해당 댓글의 +1, 순서는 부모 댓글 전체 수량 +1
         List<ReplyEntity> reply = replyRepository.findAll();
         int rparent = replyEntities.get().getRparent();
-        System.out.println("확인 : " + rparent);
         int rorder;
         try {
             rorder = reply.get(1).getRparent();
@@ -209,6 +213,23 @@ public class BoardService {
     }
 
 
+//    // 모든 댓글 출력
+//    public List<ReplyEntity> getreplylist(int bno) {
+//
+//        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+//        List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
+//        List<ReplyEntity> getreply = new ArrayList<>();
+//        // 부모 번호로 묶어서 저장한다
+//        int rno;
+//        int rparent;
+//        for (int i = 0; i < replyEntities.size(); i++){
+//            rparent = replyEntities.get(i).getRparent();
+//
+//            rno = replyEntities.get(i).getRno()
+//        }
+//
+//        return replyEntities;
+//    }
     // 모든 댓글 출력
     public List<ReplyEntity> getreplylist(int bno) {
 

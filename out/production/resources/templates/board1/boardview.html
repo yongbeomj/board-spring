@@ -62,7 +62,7 @@
     <br>
     <hr>
 
-    <div id="replytable" th:each="replyEntities : ${replyEntities}">
+    <div class="py-2 ml-2 mt-2 mb-1" id="replytable" th:each="replyEntities : ${replyEntities}">
         <div>
             <span th:text="${replyEntities.getMemberEntity2().getMid()}"></span>
             <span th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"></span>

@@ -21,7 +21,7 @@ function rwrite(bno) {
         return;
     }
     $.ajax({
-        url : "/board1/replywrite",
+        url : "/replywrite",
         data : {"bno" : bno, "rcontents" : rcontents},
         success : function(data){
             if( data == 1 ){
@@ -35,13 +35,17 @@ function rwrite(bno) {
 }
 
 function rrewrite(rno){
-    document.getElementById("rrewrite"+rno).style = "display:block";
-
+    document.getElementById("rreform"+rno).style = "display:block";
     $(function(){
         $("#btnrrechange" + rno).click(function(){ // 확인 버튼 클릭
+            var rrecontents = $("#rrecontents" + rno).val();
+            if (rrecontents == "") {
+                alert("내용 입력하시오");
+                return;
+            }
             $.ajax({
-                url : "/board1/rereplywrite",
-                data : {"rno" : rno, "rrecontents" : document.getElementById("rrecontents").value},
+                url : "/rereplywrite",
+                data : {"rno" : rno, "rrecontents" : rrecontents},
                 success : function(data){
                     if (data == 1){
                         location.reload();
@@ -57,7 +61,7 @@ function rrewrite(rno){
 
 function rdelete(rno) {
     $.ajax({
-        url : "/board1/replydelete",
+        url : "/replydelete",
         data : {"rno" : rno},
         success : function(result){
             if (result == 1) {
@@ -79,7 +83,7 @@ function rupdate(rno){
     $(function(){
         $("#btnrchange"+rno).click(function(){ // 확인 버튼 클릭
             $.ajax({
-                url: "/board1/replyupdate",
+                url: "/replyupdate",
                 data: {"rno" : rno, "newcontents" : document.getElementById("newcontents").value},
                 success : function(result){
                     if(result == 1){

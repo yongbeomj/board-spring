@@ -124,7 +124,7 @@ public class BoardContorller {
         BoardDto boardDto = boardService.getboard(bno);
         List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
 
-        Collections.reverse(replyEntities);
+//        Collections.so(replyEntities);
         model.addAttribute("boardDto", boardDto);
         model.addAttribute("replyEntities", replyEntities);
         return "board1/boardview";
@@ -274,7 +274,6 @@ public class BoardContorller {
 
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        System.out.println("컨 : " + rno+","+rrecontents);
 
         if (memberDto == null) {
             return "2";
