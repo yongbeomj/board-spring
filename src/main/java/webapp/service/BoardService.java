@@ -164,10 +164,13 @@ public class BoardService {
     public boolean rereplywrite(int rno, String rcontents) {
         // 해당 댓글 가져오기
         Optional<ReplyEntity> replyEntities = replyRepository.findById(rno);
+        // 게시물 가져오기
         int bno = replyEntities.get().getBoardEntity().getBno();
         Optional<BoardEntity> boardEntity = boardRepository.findById(bno);
+        // 댓글 작성자 정보
         int mno = replyEntities.get().getMemberEntity2().getMno();
         Optional<MemberEntity> memberEntity = memberRepository.findById(mno);
+        // 카테고리 번호
         int cano = replyEntities.get().getCategoryEntity2().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
 

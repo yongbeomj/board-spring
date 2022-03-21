@@ -251,7 +251,7 @@ public class BoardContorller {
     }
 
     // replywrite
-    @GetMapping("/board1/replywrite")
+    @GetMapping("/replywrite")
     @ResponseBody
     public String replywrite(@RequestParam("bno") int bno,
                              @RequestParam("rcontents") String rcontents) {
@@ -267,13 +267,14 @@ public class BoardContorller {
     }
 
     // rereplywrite
-    @GetMapping("/board1/rereplywrite")
+    @GetMapping("/rereplywrite")
     @ResponseBody
     public String rereplywrite(@RequestParam("rno") int rno,
                              @RequestParam("rrecontents") String rrecontents) {
 
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        System.out.println("컨 : " + rno+","+rrecontents);
 
         if (memberDto == null) {
             return "2";
@@ -283,7 +284,7 @@ public class BoardContorller {
     }
 
     // replydelete
-    @GetMapping("/board1/replydelete")
+    @GetMapping("/replydelete")
     @ResponseBody
     public int replydelete(@RequestParam("rno") int rno) {
         boolean result = boardService.replydelete(rno);
@@ -295,7 +296,7 @@ public class BoardContorller {
     }
 
     // 댓글 수정
-    @GetMapping("/board1/replyupdate")
+    @GetMapping("/replyupdate")
     @ResponseBody
     public String replyupdate(@RequestParam("rno") int rno, @RequestParam("newcontents") String newcontents) {
         boolean result = boardService.replyupdate(rno, newcontents);
