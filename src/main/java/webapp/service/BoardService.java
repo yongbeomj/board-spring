@@ -183,7 +183,7 @@ public class BoardService {
         try {
             int rorder = reply.get(0).getRparent();
             for (int i = 0; i < reply.size(); i++) {
-                if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
+                if (reply.get(i).getRparent() == rparent) {
                     if (rorder < reply.get(i).getRorder()) {
                         rorder = reply.get(i).getRorder();
                     }
@@ -200,7 +200,7 @@ public class BoardService {
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
                 .rparent(replyEntities.get().getRparent())
-                .rorder(temporder)
+                .rorder(maxrorder)
                 .rdepth(replyEntities.get().getRdepth() + 1)
                 .build();
 
