@@ -171,15 +171,19 @@ public class BoardService {
         int cano = replyEntities.get().getCategoryEntity2().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
 
-        // 해당 댓글 번호를 찾아서 부모번호는 그대로, 깊이 해당 댓글의 +1, 순서 같은 부모의 순서 최대값 +1
+        // 해당 댓글 번호를 찾아서 부모번호는 그대로
+        // 깊이는 해당 댓글의 +1
+        // 순서는 +1 깊이에서 같은 부모의 순서 최대값 +1
         // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
         List<ReplyEntity> reply = replyRepository.findAll();
         int rparent = replyEntities.get().getRparent();
+        int rdepth = replyEntities.get().getRdepth() + 1;
+        int temporder = replyEntities.get().getRorder() + 1;
         int maxrorder;
         try {
             int rorder = reply.get(0).getRparent();
             for (int i = 0; i < reply.size(); i++) {
-                if (reply.get(i).getRparent() == rparent) {
+                if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
                     if (rorder < reply.get(i).getRorder()) {
                         rorder = reply.get(i).getRorder();
                     }
@@ -196,7 +200,7 @@ public class BoardService {
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
                 .rparent(replyEntities.get().getRparent())
-                .rorder(maxrorder)
+                .rorder(temporder)
                 .rdepth(replyEntities.get().getRdepth() + 1)
                 .build();
 

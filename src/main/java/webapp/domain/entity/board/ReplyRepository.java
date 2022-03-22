@@ -11,6 +11,8 @@ public interface ReplyRepository extends JpaRepository<ReplyEntity, Integer> {
     @Query(nativeQuery = true, value = "select * from reply where bno = :bno order by rparent ASC")
     List<ReplyEntity> replyall(@Param("bno") int bno);
 
+//    @Query(nativeQuery = true, value = "select rorder from reply where rno = :rno")
+//    List<ReplyEntity> maxorder(@Param("rno") int rno);
 
 
 }
