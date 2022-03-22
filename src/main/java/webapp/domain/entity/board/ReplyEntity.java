@@ -35,7 +35,6 @@ public class ReplyEntity extends BaseTimeEntity {
     @Column(name = "rorder")
     private int rorder;
 
-
     @ManyToOne
     @JoinColumn(name = "mno")
     private MemberEntity memberEntity2;

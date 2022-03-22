@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"boardEntities", "replyEntities"})
 @Builder
 @Table(name = "member")
 public class MemberEntity extends BaseTimeEntity {
@@ -48,8 +48,6 @@ public class MemberEntity extends BaseTimeEntity {
     // 댓글 연결
     @OneToMany(mappedBy = "memberEntity2")
     private List<ReplyEntity> replyEntities = new ArrayList<>();
-
-
 
 
 }

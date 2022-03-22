@@ -171,12 +171,13 @@ public class BoardService {
         int cano = replyEntities.get().getCategoryEntity2().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
 
-        // 해당 댓글 번호를 찾아서 부모번호는 그대로, 깊이는 해당 댓글의 +1, 순서는 부모 댓글 전체 수량 +1
+        // 해당 댓글 번호를 찾아서 부모번호는 그대로, 깊이 해당 댓글의 +1, 순서 같은 부모의 순서 최대값 +1
+        // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
         List<ReplyEntity> reply = replyRepository.findAll();
         int rparent = replyEntities.get().getRparent();
-        int rorder;
+        int maxrorder;
         try {
-            rorder = reply.get(1).getRparent();
+            int rorder = reply.get(0).getRparent();
             for (int i = 0; i < reply.size(); i++) {
                 if (reply.get(i).getRparent() == rparent) {
                     if (rorder < reply.get(i).getRorder()) {
@@ -184,8 +185,9 @@ public class BoardService {
                     }
                 }
             }
+            maxrorder = rorder + 1;
         } catch (Exception e) {
-            rorder = 0;
+            maxrorder = 0;
         }
 
         ReplyEntity replyEntity = ReplyEntity.builder()
@@ -194,7 +196,7 @@ public class BoardService {
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
                 .rparent(replyEntities.get().getRparent())
-                .rorder(rorder + 1)
+                .rorder(maxrorder)
                 .rdepth(replyEntities.get().getRdepth() + 1)
                 .build();
 
@@ -242,12 +244,24 @@ public class BoardService {
 //        return getreply;
 //    }
 
+//    // 모든 댓글 출력
+//    public List<ReplyEntity> getreplylist(int bno) {
+//
+//        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
+//        List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
+//        return replyEntities;
+//    }
+
     // 모든 댓글 출력
     public List<ReplyEntity> getreplylist(int bno) {
 
-        Optional<BoardEntity> entityOptional = boardRepository.findById(bno);
-        List<ReplyEntity> replyEntities = entityOptional.get().getReplyEntities();
+        List<ReplyEntity> replyEntities = new ArrayList<>();
 
+        try {
+            replyEntities = replyRepository.replyall(bno);
+        } catch (Exception e) {
+
+        }
         return replyEntities;
     }
 

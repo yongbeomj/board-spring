@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="category")
+@Table(name = "category")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"boardEntities", "replyEntities"})
 @Builder
 public class CategoryEntity {
 
@@ -33,9 +33,6 @@ public class CategoryEntity {
     // 댓글 연결
     @OneToMany(mappedBy = "categoryEntity2")
     private List<ReplyEntity> replyEntities = new ArrayList<>();
-
-
-
 
 
 }

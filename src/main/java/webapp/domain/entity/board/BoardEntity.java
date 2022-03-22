@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="board")
+@Table(name = "board")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"replyEntities"})
 @Builder
 public class BoardEntity extends BaseTimeEntity {
 
@@ -35,7 +35,7 @@ public class BoardEntity extends BaseTimeEntity {
 
     // 작성자 = mno
     @ManyToOne
-    @JoinColumn(name="mno")
+    @JoinColumn(name = "mno")
     private MemberEntity memberEntity;
 
     // 카테고리 no
