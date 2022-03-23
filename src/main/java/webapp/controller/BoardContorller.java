@@ -175,7 +175,6 @@ public class BoardContorller {
                     .build();
             boardService.boardupdate(boardDto);
         } catch (Exception e) {
-            System.out.println("에러");
             System.out.println(e);
         }
         return "redirect:/board1/boardview/" + bno;
