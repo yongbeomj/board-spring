@@ -10,11 +10,12 @@
 <div class="container">
     <div class="d-flex justify-content-start">
         <div>
-            <h2>Board 3</h2>
+            <h2>Board 1</h2>
         </div>
         <div>
-            <a th:href="@{/board3/boardwrite}">
+            <a th:href="@{/board1/boardwrite}">
                 <button type="button" class="btn btn-outline-primary mx-5">글쓰기</button>
+
             </a>
         </div>
     </div>
@@ -27,7 +28,7 @@
         </tr>
         <tr th:each="boardDto : ${boardDtos}">
             <td>
-                <a th:href="@{'/board3/boardview/' + ${boardDto.bno}}">
+                <a th:href="@{'/board1/boardview/' + ${boardDto.bno}}">
                     <span th:text="${boardDto.btitle}">제목</span>
                 </a>
             </td>
