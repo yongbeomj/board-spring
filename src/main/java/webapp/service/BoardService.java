@@ -161,6 +161,7 @@ public class BoardService {
     public boolean rereplywrite(int rno, String rcontents) {
         // 해당 댓글 가져오기
         Optional<ReplyEntity> replyEntities = replyRepository.findById(rno);
+//        System.out.println("rno : " + rno);
         // 게시물 가져오기
         int bno = replyEntities.get().getBoardEntity().getBno();
         Optional<BoardEntity> boardEntity = boardRepository.findById(bno);
@@ -171,24 +172,34 @@ public class BoardService {
         int cano = replyEntities.get().getCategoryEntity2().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
 
-        List<ReplyEntity> reply = replyRepository.findAll();
-        // 부모번호는 그대로
-        int rparent = replyEntities.get().getRparent();
+        // 해당 댓글 번호를 찾아서 부모번호는 그대로
         // 깊이는 해당 댓글의 +1
-        int rdepth = replyEntities.get().getRdepth() + 1;
-        // 순서는 해당 댓글의 +1
-        int rorder = replyEntities.get().getRorder() + 1;
-
+        // 순서는 +1 깊이에서 같은 부모의 순서 최대값 +1
         // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
+
+        // 부모는 그대로
+        int rparent = replyEntities.get().getRparent();
+        // 뎁스, 순서는 각각 +1
+        int rdepth = replyEntities.get().getRdepth() + 1;
+        int temporder = replyEntities.get().getRorder() + 1;
+        System.out.println("rparent : " + rparent);
+        System.out.println("rdepth : " + rdepth);
+        System.out.println("temporder : " + temporder);
+
+        // 만약 부모가 같고 신규댓글 순서 이상인 댓글들은 모두 순서를 +1
+        List<ReplyEntity> reply = replyRepository.findAll();
+
+        int maxrorder;
         try {
+            int rorder = reply.get(0).getRorder();
             for (int i = 0; i < reply.size(); i++) {
-                // 만약 부모가 같고 순서가 신규 댓글 이상이라면
-                if (reply.get(i).getRparent() == rparent && reply.get(i).getRorder() >= rorder) {
-                    // 해당 댓글의 order를 +1한다
+                if (reply.get(i).getRparent() == rparent && reply.get(i).getRorder() == temporder) {
                     reply.get(i).setRorder(reply.get(i).getRorder() + 1);
                 }
             }
+            maxrorder = rorder + 1;
         } catch (Exception e) {
+            maxrorder = 0;
         }
 
         ReplyEntity replyEntity = ReplyEntity.builder()
@@ -196,9 +207,9 @@ public class BoardService {
                 .boardEntity(boardEntity.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
-                .rparent(rparent)
-                .rorder(rorder)
-                .rdepth(rdepth)
+                .rparent(replyEntities.get().getRparent())
+                .rorder(maxrorder)
+                .rdepth(replyEntities.get().getRdepth() + 1)
                 .build();
 
         replyRepository.save(replyEntity); // 댓글 저장
@@ -206,7 +217,21 @@ public class BoardService {
 
         return false;
     }
+    // boardupdate
+    @Transactional
+    public boolean boardupdate(BoardDto boardDto) {
+        try {
+            Optional<BoardEntity> entityOptional = boardRepository.findById(boardDto.getBno());
+            entityOptional.get().setBtitle(boardDto.getBtitle());
+            entityOptional.get().setBcontents(boardDto.getBcontents());
+            return true;
+        } catch (Exception e) {
+            System.out.println("에러");
+            System.out.println(e);
+            return false;
+        }
 
+    }
 
 //    // 모든 댓글 출력 - 수정 중
 //    public List<ReplyEntity> getreplylist(int bno) {
