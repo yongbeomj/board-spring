@@ -171,27 +171,24 @@ public class BoardService {
         int cano = replyEntities.get().getCategoryEntity2().getCano();
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(cano);
 
-        // 해당 댓글 번호를 찾아서 부모번호는 그대로
-        // 깊이는 해당 댓글의 +1
-        // 순서는 +1 깊이에서 같은 부모의 순서 최대값 +1
-        // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
         List<ReplyEntity> reply = replyRepository.findAll();
+        // 부모번호는 그대로
         int rparent = replyEntities.get().getRparent();
+        // 깊이는 해당 댓글의 +1
         int rdepth = replyEntities.get().getRdepth() + 1;
-        int temporder = replyEntities.get().getRorder() + 1;
-        int maxrorder;
+        // 순서는 해당 댓글의 +1
+        int rorder = replyEntities.get().getRorder() + 1;
+
+        // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
         try {
-            int rorder = reply.get(0).getRparent();
             for (int i = 0; i < reply.size(); i++) {
-                if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
-                    if (rorder < reply.get(i).getRorder()) {
-                        rorder = reply.get(i).getRorder();
-                    }
+                // 만약 부모가 같고 순서가 신규 댓글 이상이라면
+                if (reply.get(i).getRparent() == rparent && reply.get(i).getRorder() >= rorder) {
+                    // 해당 댓글의 order를 +1한다
+                    reply.get(i).setRorder(reply.get(i).getRorder() + 1);
                 }
             }
-            maxrorder = rorder + 1;
         } catch (Exception e) {
-            maxrorder = 0;
         }
 
         ReplyEntity replyEntity = ReplyEntity.builder()
@@ -199,9 +196,9 @@ public class BoardService {
                 .boardEntity(boardEntity.get())
                 .categoryEntity2(categoryEntity.get())
                 .memberEntity2(memberEntity.get())
-                .rparent(replyEntities.get().getRparent())
-                .rorder(temporder)
-                .rdepth(replyEntities.get().getRdepth() + 1)
+                .rparent(rparent)
+                .rorder(rorder)
+                .rdepth(rdepth)
                 .build();
 
         replyRepository.save(replyEntity); // 댓글 저장
