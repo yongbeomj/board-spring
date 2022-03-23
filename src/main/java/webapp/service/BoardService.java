@@ -177,21 +177,32 @@ public class BoardService {
         // 깊이는 해당 댓글의 +1
         int rdepth = replyEntities.get().getRdepth() + 1;
 
-        int rorder;
+        // 지금 댓글 다음번 댓글 뎁스가 지금과 같은지 아닌지
+        List<ReplyEntity> findreply = replyRepository.findreply(bno, rparent, rdepth);
+        int rorder = 0;
         int temp = 0;
+        // 해당 댓글 다음번 댓글 가져오기
+        List<ReplyEntity> nextreply = replyRepository.nextreply(bno, rparent, replyEntities.get().getRorder()+1);
         try {
-            // 만약 다음 뎁스가 있다면 순서는 다음 뎁스에서 최대값 +1
-            for (int i = 0; i < reply.size(); i++) {
-                if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
-                    if (reply.get(i).getRorder() > temp) {
-                        temp = reply.get(i).getRorder();
+            // 만약 다음 댓글 뎁스가 현재 뎁스 +1과 같다면
+            if (nextreply.get(0).getRdepth() == rdepth){
+                for (int i = 0; i < reply.size(); i++) {
+                    if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
+                        if (reply.get(i).getRorder() > temp) {
+                            temp = reply.get(i).getRorder();
+                        }
                     }
                 }
+                rorder = temp + 1;
+                System.out.println("depth : " + nextreply.get(0).getRdepth());
             }
-            rorder = temp + 1;
-        } catch (Exception e){
-            // 다음 뎁스가 없으면 현재 댓글 순서 +1
+
+        } catch (Exception e) {
+            // 같지 않다면
+            // 다음 뎁스 댓글이 없다면 현재 댓글 순서 +1
             rorder = replyEntities.get().getRorder() + 1;
+            System.out.println("뎁스 신규로");
+
         }
 
         try {

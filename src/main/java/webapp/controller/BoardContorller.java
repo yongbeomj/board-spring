@@ -135,7 +135,6 @@ public class BoardContorller {
         BoardDto boardDto = boardService.getboard(bno);
         List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
 
-        Collections.reverse(replyEntities);
         model.addAttribute("boardDto", boardDto);
         model.addAttribute("replyEntities", replyEntities);
         return "board2/boardview";
@@ -147,7 +146,6 @@ public class BoardContorller {
         BoardDto boardDto = boardService.getboard(bno);
         List<ReplyEntity> replyEntities = boardService.getreplylist(bno);
 
-        Collections.reverse(replyEntities);
         model.addAttribute("boardDto", boardDto);
         model.addAttribute("replyEntities", replyEntities);
         return "board3/boardview";

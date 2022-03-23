@@ -62,51 +62,55 @@
     <br>
     <hr>
 
-    <div class="py-2 ml-2 mt-2 mb-1" id="replytable" th:each="replyEntities : ${replyEntities}" th:style="${replyEntities.rorder == 0 ? 'font-weight: bold;' : 'margin-left:30px;'}">
-            <div>
-                <span th:text="${replyEntities.getMemberEntity2().getMid()}"></span>
-                <span th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"></span>
-            </div>
-            <div class="d-flex">
-                <div class="col-md-10">
+
+    <div class="py-2 ml-2 mt-2 mb-1" id="replytable" th:each="replyEntities : ${replyEntities}"
+         th:style="${replyEntities.rorder == 0 ? 'font-weight: bold;' : 'margin-left:30px;'}">
+        <div>
+            <span th:text="${replyEntities.getMemberEntity2().getMid()}"></span>
+            <span th:text="${#temporals.format(replyEntities.createdDate, 'yyyy-MM-dd hh:mm:ss')}"></span>
+        </div>
+        <div class="d-flex">
+            <div class="col-md-10">
                     <span th:id="tdrcontents+${replyEntities.rno}" name="tdrcontents"
                           th:text="${replyEntities.rcontents}"></span>
-                </div>
-                <div class="d-flex col-md-2 text-lg-end">
-                    <div>
-                        <!-- 대댓글 -->
-                        <a href="#" th:id="btnrrewrite+${replyEntities.rno}" th:onclick="rrewrite([[${replyEntities.rno}]])">
-                            댓글
-                        </a>
-                    </div>
-                    <div class="d-flex mx-2">
-                        <a href="#" th:id="btnrupdate+${replyEntities.rno}" th:onclick="rupdate([[${replyEntities.rno}]])">
-                            수정
-                        </a>
-                        <a href="#" th:id="btnrchange+${replyEntities.rno}" style="display:none;">
-                            확인
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#" th:onclick="rdelete([[${replyEntities.rno}]])">
-                            삭제
-                        </a>
-                    </div>
-                </div>
             </div>
-            <!-- 대댓글 -->
-            <div class="row" th:id="rreform+${replyEntities.rno}" style="display:none;">
-                <div class="col-md-10">
-                    <input class="form-control" type="text" th:id="rrecontents+${replyEntities.rno}" name="rrecontents">
+            <div class="d-flex col-md-2 text-lg-end">
+                <div>
+                    <!-- 대댓글 -->
+                    <a href="#" th:id="btnrrewrite+${replyEntities.rno}"
+                       th:onclick="rrewrite([[${replyEntities.rno}]])">
+                        댓글
+                    </a>
                 </div>
-                <div class="col-md-2">
-                    <a class="form-control" th:id="btnrrechange+${replyEntities.rno}" th:onclick="rrechange([[${replyEntities.rno}]])">
-                        댓글작성
+                <div class="d-flex mx-2">
+                    <a href="#" th:id="btnrupdate+${replyEntities.rno}" th:onclick="rupdate([[${replyEntities.rno}]])">
+                        수정
+                    </a>
+                    <a href="#" th:id="btnrchange+${replyEntities.rno}" style="display:none;">
+                        확인
+                    </a>
+                </div>
+                <div>
+                    <a href="#" th:onclick="rdelete([[${replyEntities.rno}]])">
+                        삭제
                     </a>
                 </div>
             </div>
         </div>
-        <hr>
+        <!-- 대댓글 -->
+        <div class="row" th:id="rreform+${replyEntities.rno}" style="display:none;">
+            <div class="col-md-10">
+                <input class="form-control" type="text" th:id="rrecontents+${replyEntities.rno}" name="rrecontents">
+            </div>
+            <div class="col-md-2">
+                <a class="form-control" th:id="btnrrechange+${replyEntities.rno}"
+                   th:onclick="rrechange([[${replyEntities.rno}]])">
+                    댓글작성
+                </a>
+            </div>
+        </div>
+    </div>
+    <hr>
 </div>
 
 
