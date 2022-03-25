@@ -177,15 +177,16 @@ public class BoardService {
         // 깊이는 해당 댓글의 +1
         int rdepth = replyEntities.get().getRdepth() + 1;
 
-        // 지금 댓글 다음번 댓글 뎁스가 지금과 같은지 아닌지
-        List<ReplyEntity> findreply = replyRepository.findreply(bno, rparent, rdepth);
         int rorder = 0;
         int temp = 0;
         // 해당 댓글 다음번 댓글 가져오기
-        List<ReplyEntity> nextreply = replyRepository.nextreply(bno, rparent, replyEntities.get().getRorder()+1);
+        List<ReplyEntity> nextreply = replyRepository.nextreply(bno, rparent, replyEntities.get().getRorder() + 1);
+        System.out.println(nextreply);
+
         try {
-            // 만약 다음 댓글 뎁스가 현재 뎁스 +1과 같다면
-            if (nextreply.get(0).getRdepth() == rdepth){
+            // 만약 다음 댓글 뎁스가 신규 댓글 뎁스와 같다면
+            if (nextreply.get(0).getRdepth() == rdepth) {
+                // 다음 뎁스에서 최대값 구하고
                 for (int i = 0; i < reply.size(); i++) {
                     if (reply.get(i).getRparent() == rparent && reply.get(i).getRdepth() == rdepth) {
                         if (reply.get(i).getRorder() > temp) {
@@ -193,25 +194,28 @@ public class BoardService {
                         }
                     }
                 }
+                // 최대값 +1
                 rorder = temp + 1;
-                System.out.println("depth : " + nextreply.get(0).getRdepth());
+            } else { // 만약 다음 댓글 뎁스가 신규 댓글 뎁스와 다르다면
+                // 현재 댓글 순서 +1
+                rorder = replyEntities.get().getRorder() + 1;
             }
 
-        } catch (Exception e) {
-            // 같지 않다면
+        } catch (Exception e) { // 다음 댓글이 없다면(현재 댓글이 마지막)
             // 다음 뎁스 댓글이 없다면 현재 댓글 순서 +1
             rorder = replyEntities.get().getRorder() + 1;
-            System.out.println("뎁스 신규로");
-
         }
+
+        // 같은 부모 댓글 가져오기
+        List<ReplyEntity> findreply = replyRepository.findreply(bno, rparent);
 
         try {
             // 중간에 댓글이 등록될 경우 뒷 순서 댓글은 하나씩 밀려야 함
-            for (int i = 0; i < reply.size(); i++) {
+            for (int i = 0; i < findreply.size(); i++) {
                 // 만약 부모가 같고 순서가 신규 댓글 이상이라면
-                if (reply.get(i).getRparent() == rparent && reply.get(i).getRorder() >= rorder) {
+                if (findreply.get(i).getRparent() == rparent && findreply.get(i).getRorder() >= rorder) {
                     // 해당 댓글의 order를 +1한다
-                    reply.get(i).setRorder(reply.get(i).getRorder() + 1);
+                    findreply.get(i).setRorder(findreply.get(i).getRorder() + 1);
                 }
             }
         } catch (Exception e) {

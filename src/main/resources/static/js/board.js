@@ -65,7 +65,7 @@ function rdelete(rno) {
         data : {"rno" : rno},
         success : function(result){
             if (result == 1) {
-                $('#replytable').load( location.href+' #replytable' );
+                location.reload();
                 alert("댓글이 삭제되었습니다");
             } else {
                 alert("오류발생");
